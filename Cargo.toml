@@ -1,0 +1,27 @@
+[package]
+name = "progressing"
+version = "0.1.0"
+description = "A lightweight, counting progress-bar for Rust"
+edition = "2018"
+
+authors = [
+    "Parga Cacheiro, Dominic (dominic.parga@gmail.com)",
+]
+repository = "https://github.com/dominicparga/progressing"
+readme = "README.md"
+# keywords = ["", "", "", "", ""]
+# categories = ["", "", "", "", ""]
+license = "Apache-2.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+
+[dependencies]
+env_logger = "0.6" # logging for external use, e.g. main.rs and examples
+log = "0.4" # logging for internal use, e.g. lib.rs
+clap = "2" # cmdline-parsing
+
+
+[[example]]
+name = "progress-bar"
+path = "examples/progress_bar.rs"
