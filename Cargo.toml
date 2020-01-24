@@ -1,6 +1,6 @@
 [package]
 name = "progressing"
-version = "0.1.0"
+version = "1.0.0"
 description = "A lightweight, counting progress-bar for Rust"
 edition = "2018"
 
@@ -23,5 +23,9 @@ clap = "2" # cmdline-parsing
 
 
 [[example]]
-name = "different-bars"
-path = "examples/different_bars.rs"
+name = "simple"
+path = "examples/simple.rs"
+
+[[example]]
+name = "loops"
+path = "examples/loops.rs"

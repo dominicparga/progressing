@@ -7,9 +7,31 @@
 [![License][github/license/badge]][github/license]
 [![Last commit][github/last-commit/badge]][github/last-commit]
 
+## Look and feel
+
+```rust
+// Printing value 0.3 clamped to [0, 1]
+// [=====>            ]
+let mut progressbar = progressing::ClampingBar::new();
+progressbar.set_bar_len(20);
+progressbar.set(0.3).reprintln()
+
+// Mapping from [-9, 5] to [0, 1]
+// [================> ] (4 / 5)
+let mut progressbar = progressing::MappingBar::new(-9..=5);
+progressbar.set_bar_len(20);
+progressbar.set(4).reprintln()
+
+// Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
+// [============>     ] (42 / 60 # 130)
+let mut progressbar = progressing::BernoulliBar::from_goal(60);
+progressbar.set_bar_len(20);
+progressbar.set((42, 130).into()).reprintln()
+```
+
 ## Setup and usage
 
-Please refer to the [examples-folder][github/tree/examples].
+Please refer to the [examples][github/tree/examples].
 
 [crates.io/progressing]: https://crates.io/crates/progressing
 [crates.io/progressing/badge]: https://img.shields.io/crates/v/progressing?style=for-the-badge

@@ -11,6 +11,13 @@ use std::ops;
 //------------------------------------------------------------------------------------------------//
 
 pub trait Bar: fmt::Display {
+    fn bar_len(&self) -> usize;
+
+    /// Do not shorten the length before reprinting since the line will be overwritten, not cleared.
+    ///
+    /// `[========> ]` becomes `[====>]==> ]` instead of `[====>]     `.
+    fn set_bar_len(&mut self, new_bar_len: usize);
+
     /// Returns the printable progressbar.
     fn display(&self) -> String {
         format!("{}", self)
@@ -72,7 +79,7 @@ pub trait Bar: fmt::Display {
     type Progress;
 
     /// Sets the progress to the given value
-    fn update(&mut self, new_progress: Self::Progress) -> &mut Self;
+    fn set(&mut self, new_progress: Self::Progress) -> &mut Self;
 
     /// Adds the given progress to the current progress
     fn add(&mut self, delta: Self::Progress) -> &mut Self;
@@ -97,7 +104,7 @@ pub struct ClampingBar {
 impl Default for ClampingBar {
     fn default() -> Self {
         ClampingBar {
-            bar_len: 72,
+            bar_len: 42,
             prefix: String::from(""),
             left_bracket: String::from("["),
             right_bracket: String::from("]"),
@@ -124,10 +131,6 @@ impl ClampingBar {
         }
     }
 
-    fn bar_len(&self) -> usize {
-        self.bar_len
-    }
-
     fn inner_bar_len(&self) -> usize {
         self.bar_len() - self.brackets_len()
     }
@@ -140,7 +143,17 @@ impl ClampingBar {
 impl Bar for ClampingBar {
     type Progress = f32;
 
-    fn update(&mut self, mut new_progress: Self::Progress) -> &mut Self {
+    fn bar_len(&self) -> usize {
+        self.bar_len
+    }
+
+    /// panics if length is `< 3`
+    fn set_bar_len(&mut self, new_bar_len: usize) {
+        assert!(new_bar_len > self.brackets_len());
+        self.bar_len = new_bar_len;
+    }
+
+    fn set(&mut self, mut new_progress: Self::Progress) -> &mut Self {
         if new_progress < 0.0 {
             new_progress = 0.0;
         }
@@ -152,7 +165,7 @@ impl Bar for ClampingBar {
     }
 
     fn add(&mut self, delta: Self::Progress) -> &mut Self {
-        self.update(self.progress + delta)
+        self.set(self.progress + delta)
     }
 }
 
@@ -200,14 +213,6 @@ where
             ..Default::default()
         }
     }
-
-    pub fn from_all(bar: ClampingBar, range: ops::RangeInclusive<N>) -> MappingBar<N> {
-        MappingBar {
-            bar,
-            range,
-            ..Default::default()
-        }
-    }
 }
 
 //------------------------------------------------------------------------------------------------//
@@ -235,21 +240,29 @@ impl MappingBar<u32> {
 impl Bar for MappingBar<u32> {
     type Progress = u32;
 
-    fn update(&mut self, new_progress: Self::Progress) -> &mut Self {
+    fn bar_len(&self) -> usize {
+        self.bar.bar_len()
+    }
+
+    fn set_bar_len(&mut self, new_bar_len: usize) {
+        self.bar.set_bar_len(new_bar_len)
+    }
+
+    fn set(&mut self, new_progress: Self::Progress) -> &mut Self {
         self.k = new_progress;
 
         // calculate new progress
         let k_min = self.start() as f32;
         let k_max = self.end() as f32;
         let k = new_progress as f32;
-        self.bar.update((k - k_min) / (k_max - k_min));
+        self.bar.set((k - k_min) / (k_max - k_min));
 
         // return self
         self
     }
 
     fn add(&mut self, delta: Self::Progress) -> &mut Self {
-        self.update(self.k + delta)
+        self.set(self.k + delta)
     }
 }
 
@@ -284,21 +297,29 @@ impl MappingBar<i32> {
 impl Bar for MappingBar<i32> {
     type Progress = i32;
 
-    fn update(&mut self, new_progress: Self::Progress) -> &mut Self {
+    fn bar_len(&self) -> usize {
+        self.bar.bar_len()
+    }
+
+    fn set_bar_len(&mut self, new_bar_len: usize) {
+        self.bar.set_bar_len(new_bar_len)
+    }
+
+    fn set(&mut self, new_progress: Self::Progress) -> &mut Self {
         self.k = new_progress;
 
         // calculate new progress
         let k_min = self.start() as f32;
         let k_max = self.end() as f32;
         let k = new_progress as f32;
-        self.bar.update((k - k_min) / (k_max - k_min));
+        self.bar.set((k - k_min) / (k_max - k_min));
 
         // return self
         self
     }
 
     fn add(&mut self, delta: Self::Progress) -> &mut Self {
-        self.update(self.k + delta)
+        self.set(self.k + delta)
     }
 }
 
@@ -368,20 +389,21 @@ impl BernoulliBar {
             ..Default::default()
         }
     }
-
-    pub fn from_bar(bar: MappingBar<u32>) -> BernoulliBar {
-        BernoulliBar {
-            bar,
-            ..Default::default()
-        }
-    }
 }
 
 impl Bar for BernoulliBar {
     type Progress = BernoulliProgress;
 
-    fn update(&mut self, outcome: Self::Progress) -> &mut Self {
-        self.bar.update(outcome.successes);
+    fn bar_len(&self) -> usize {
+        self.bar.bar_len()
+    }
+
+    fn set_bar_len(&mut self, new_bar_len: usize) {
+        self.bar.set_bar_len(new_bar_len)
+    }
+
+    fn set(&mut self, outcome: Self::Progress) -> &mut Self {
+        self.bar.set(outcome.successes);
         self.attempts = outcome.attempts;
         self
     }
@@ -391,7 +413,7 @@ impl Bar for BernoulliBar {
             successes: self.bar.k + outcome.successes,
             attempts: self.attempts + outcome.attempts,
         };
-        self.update(new_progress)
+        self.set(new_progress)
     }
 }
 

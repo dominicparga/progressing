@@ -29,10 +29,10 @@ fn clamped() -> Result<(), String> {
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
-        progressbar.update(value as f32 / 100.0).reprint()?;
+        progressbar.set(value as f32 / 100.0).reprint()?;
 
         // sleep for visual effects ;)
-        thread::sleep(time::Duration::from_millis(50));
+        thread::sleep(time::Duration::from_millis(30));
     }
     // add new line to finished progressbar
     progressbar.reprintln()
@@ -56,10 +56,10 @@ fn mapped() -> Result<(), String> {
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
-        progressbar.update(value).reprint()?;
+        progressbar.set(value).reprint()?;
 
         // sleep for visual effects ;)
-        thread::sleep(time::Duration::from_millis(50));
+        thread::sleep(time::Duration::from_millis(30));
     }
     // add new line to finished progressbar
     progressbar.reprintln()
@@ -82,6 +82,8 @@ fn bernoulli() -> Result<(), String> {
 
     // create bar
     let mut progressbar = progressing::BernoulliBar::from_goal(60);
+    // you can reset the lenght of it
+    progressbar.set_bar_len(60);
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
@@ -90,7 +92,7 @@ fn bernoulli() -> Result<(), String> {
         progressbar.add(is_successful.into()).reprint()?;
 
         // sleep for visual effects ;)
-        thread::sleep(time::Duration::from_millis(50));
+        thread::sleep(time::Duration::from_millis(30));
     }
     // add new line to finished progressbar
     progressbar.reprintln()
