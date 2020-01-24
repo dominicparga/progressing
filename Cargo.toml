@@ -10,7 +10,7 @@ authors = [
 repository = "https://github.com/dominicparga/progressing"
 readme = "README.md"
 keywords = ["progressbar", "progress", "pbr", "logging", "counting"]
-categories = ["Command-line interface"]
+categories = ["command-line-interface"]
 license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
