@@ -78,6 +78,8 @@ pub trait Bar: fmt::Display {
 
     type Progress;
 
+    fn progress(&self) -> Self::Progress;
+
     /// Sets the progress to the given value
     fn set(&mut self, new_progress: Self::Progress) -> &mut Self;
 
@@ -151,6 +153,10 @@ impl Bar for ClampingBar {
     fn set_bar_len(&mut self, new_bar_len: usize) {
         assert!(new_bar_len > self.brackets_len());
         self.bar_len = new_bar_len;
+    }
+
+    fn progress(&self) -> f32 {
+        self.progress
     }
 
     fn set(&mut self, mut new_progress: f32) -> &mut Self {
@@ -248,6 +254,10 @@ impl Bar for MappingBar<u32> {
         self.bar.set_bar_len(new_bar_len)
     }
 
+    fn progress(&self) -> u32 {
+        self.k
+    }
+
     fn set(&mut self, new_progress: u32) -> &mut Self {
         self.k = new_progress;
 
@@ -303,6 +313,10 @@ impl Bar for MappingBar<i32> {
 
     fn set_bar_len(&mut self, new_bar_len: usize) {
         self.bar.set_bar_len(new_bar_len)
+    }
+
+    fn progress(&self) -> i32 {
+        self.k
     }
 
     fn set(&mut self, new_progress: i32) -> &mut Self {
@@ -365,6 +379,17 @@ impl From<bool> for BernoulliProgress {
     }
 }
 
+impl ops::Add for BernoulliProgress {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        Self {
+            successes: self.successes + other.successes,
+            attempts: self.attempts + other.attempts,
+        }
+    }
+}
+
 //------------------------------------------------------------------------------------------------//
 
 #[derive(Debug)]
@@ -402,6 +427,13 @@ impl Bar for BernoulliBar {
         self.bar.set_bar_len(new_bar_len)
     }
 
+    fn progress(&self) -> BernoulliProgress {
+        BernoulliProgress {
+            successes: self.bar.progress(),
+            attempts: self.attempts,
+        }
+    }
+
     fn set(&mut self, outcome: BernoulliProgress) -> &mut Self {
         self.bar.set(outcome.successes);
         self.attempts = outcome.attempts;
@@ -409,11 +441,7 @@ impl Bar for BernoulliBar {
     }
 
     fn add(&mut self, outcome: BernoulliProgress) -> &mut Self {
-        let new_progress = BernoulliProgress {
-            successes: self.bar.k + outcome.successes,
-            attempts: self.attempts + outcome.attempts,
-        };
-        self.set(new_progress)
+        self.set(self.progress() + outcome)
     }
 }
 
