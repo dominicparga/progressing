@@ -351,11 +351,20 @@ pub struct BernoulliProgress {
     pub attempts: u32,
 }
 
+impl BernoulliProgress {
+    pub fn new() -> Self {
+        BernoulliProgress {
+            successes: 0,
+            attempts: 0
+        }
+    }
+}
+
 impl From<(u32, u32)> for BernoulliProgress {
     fn from((successes, attempts): (u32, u32)) -> Self {
         BernoulliProgress {
             successes,
-            attempts,
+            attempts
         }
     }
 }
@@ -364,7 +373,7 @@ impl From<u32> for BernoulliProgress {
     fn from(successes: u32) -> Self {
         BernoulliProgress {
             successes,
-            attempts: successes,
+            attempts: successes
         }
     }
 }
@@ -374,7 +383,7 @@ impl From<bool> for BernoulliProgress {
         let successes = if is_successful { 1 } else { 0 };
         BernoulliProgress {
             successes,
-            attempts: 1,
+            attempts: 1
         }
     }
 }
