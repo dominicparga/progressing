@@ -7,11 +7,81 @@ use std::cmp::min;
 use std::io;
 
 //------------------------------------------------------------------------------------------------//
+
+pub trait Bar {
+    /// Returns the printable progressbar.
+    fn render(&self, progress: f32) -> String;
+
+    fn write_to_stdout(&self, msg: &str) -> Result<(), String> {
+        let mut output = stdout();
+        match output.write(msg.as_bytes()) {
+            Ok(_) => (),
+            Err(e) => return Err(format!("{}", e)),
+        };
+        match output.flush() {
+            Ok(_) => (),
+            Err(e) => return Err(format!("{}", e)),
+        };
+
+        Ok(())
+    }
+
+    /// Progress is clipped to `[0, 1]`.
+    ///
+    /// Prints a progressbar using given progress.
+    /// Does not print a newline-character.
+    /// Use `println(...)` for printing a newline-character.
+    /// Use `reprint(...)` for overwriting the current stdout-line.
+    ///
+    /// Returns error if writing to `stdout` throws an error.
+    fn print(&self, progress: f32) -> Result<(), String> {
+        let msg = format!("{}", self.render(progress));
+        self.write_to_stdout(msg.as_ref())
+    }
+
+    /// Progress is clipped to `[0, 1]`.
+    ///
+    /// Prints a progressbar using given progress.
+    /// In additon to `print(...)`, this function prints a new line.
+    /// Use `reprintln(...)` for overwriting the current stdout-line.
+    ///
+    /// Returns error if writing to `stdout` throws an error.
+    fn println(&self, progress: f32) -> Result<(), String> {
+        let msg = format!("{}\n", self.render(progress));
+        self.write_to_stdout(msg.as_ref())
+    }
+
+    /// Progress is clipped to `[0, 1]`.
+    ///
+    /// Prints the current line again with progressbar using given progress.
+    /// Does not print a newline-character.
+    /// Use `reprintln(...)` for reprinting with a newline-character.
+    ///
+    /// Returns error if writing to `stdout` throws an error.
+    fn reprint(&self, progress: f32) -> Result<(), String> {
+        let msg = format!("\r{}", self.render(progress));
+        self.write_to_stdout(msg.as_ref())
+    }
+
+    /// Progress is clipped to `[0, 1]`.
+    ///
+    /// Prints the current line again with progressbar using given progress.
+    /// In additon to `reprint(...)`, this function prints a new line.
+    /// Use `println(...)` for always printing a newline-character.
+    ///
+    /// Returns error if writing to `stdout` throws an error.
+    fn reprintln(&self, progress: f32) -> Result<(), String> {
+        let msg = format!("\r{}\n", self.render(progress));
+        self.write_to_stdout(msg.as_ref())
+    }
+}
+
+//------------------------------------------------------------------------------------------------//
 // default bar clipping to [0; 1]
 
 /// Only optimized for single-length-strings, but strings are more handy than chars.
 #[derive(Debug)]
-pub struct Bar {
+pub struct ClippingBar {
     bar_len: usize,
     prefix: String,
     suffix: String,
@@ -22,9 +92,9 @@ pub struct Bar {
     hat: String,
 }
 
-impl Default for Bar {
+impl Default for ClippingBar {
     fn default() -> Self {
-        Bar {
+        ClippingBar {
             bar_len: 72,
             prefix: String::from(""),
             suffix: String::from(""),
@@ -37,9 +107,9 @@ impl Default for Bar {
     }
 }
 
-impl Bar {
-    pub fn new() -> Bar {
-        Bar {
+impl ClippingBar {
+    pub fn new() -> ClippingBar {
+        ClippingBar {
             ..Default::default()
         }
     }
@@ -75,13 +145,10 @@ impl Bar {
     fn brackets_len(&self) -> usize {
         self.left_bracket.len() + self.right_bracket.len()
     }
+}
 
-    //--------------------------------------------------------------------------------------------//
-    // print to stdout
-
+impl Bar for ClippingBar {
     /// Progress is clipped to `[0, 1]`.
-    ///
-    /// Returns the printable progressbar.
     fn render(&self, progress: f32) -> String {
         // calc progress
         // -> bar needs to be calculated
@@ -104,67 +171,32 @@ impl Bar {
             self.prefix, self.left_bracket, bar, self.right_bracket, self.suffix
         )
     }
+}
 
-    fn write_to_stdout(&self, msg: &str) -> Result<(), String> {
-        let mut output = stdout();
-        match output.write(msg.as_bytes()) {
-            Ok(_) => (),
-            Err(e) => return Err(format!("{}", e)),
-        };
-        match output.flush() {
-            Ok(_) => (),
-            Err(e) => return Err(format!("{}", e)),
-        };
+//------------------------------------------------------------------------------------------------//
+// bar mapping to [min; max]
 
-        Ok(())
+#[derive(Debug)]
+pub struct MappingBar {
+    bar: ClippingBar,
+    k_min: u32,
+    k_max: u32,
+}
+
+impl Default for MappingBar {
+    fn default() -> Self {
+        MappingBar {
+            bar: ClippingBar::new(),
+            k_min: 0,
+            k_max: 100,
+        }
     }
+}
 
-    /// Progress is clipped to `[0, 1]`.
-    ///
-    /// Prints a progressbar using given progress.
-    /// Does not print a newline-character.
-    /// Use `println(...)` for printing a newline-character.
-    /// Use `reprint(...)` for overwriting the current stdout-line.
-    ///
-    /// Returns error if writing to `stdout` throws an error.
-    pub fn print(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("{}", self.render(progress));
-        self.write_to_stdout(msg.as_ref())
-    }
-
-    /// Progress is clipped to `[0, 1]`.
-    ///
-    /// Prints a progressbar using given progress.
-    /// In additon to `print(...)`, this function prints a new line.
-    /// Use `reprintln(...)` for overwriting the current stdout-line.
-    ///
-    /// Returns error if writing to `stdout` throws an error.
-    pub fn println(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("{}\n", self.render(progress));
-        self.write_to_stdout(msg.as_ref())
-    }
-
-    /// Progress is clipped to `[0, 1]`.
-    ///
-    /// Prints the current line again with progressbar using given progress.
-    /// Does not print a newline-character.
-    /// Use `reprintln(...)` for reprinting with a newline-character.
-    ///
-    /// Returns error if writing to `stdout` throws an error.
-    pub fn reprint(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("\r{}", self.render(progress));
-        self.write_to_stdout(msg.as_ref())
-    }
-
-    /// Progress is clipped to `[0, 1]`.
-    ///
-    /// Prints the current line again with progressbar using given progress.
-    /// In additon to `reprint(...)`, this function prints a new line.
-    /// Use `println(...)` for always printing a newline-character.
-    ///
-    /// Returns error if writing to `stdout` throws an error.
-    pub fn reprintln(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("\r{}\n", self.render(progress));
-        self.write_to_stdout(msg.as_ref())
+impl MappingBar {
+    pub fn new() -> MappingBar {
+        MappingBar {
+            ..Default::default()
+        }
     }
 }

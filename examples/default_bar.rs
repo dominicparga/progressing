@@ -8,6 +8,7 @@ use std::time;
 // own modules
 
 use progressing;
+use progressing::Bar;
 
 //------------------------------------------------------------------------------------------------//
 
@@ -18,7 +19,7 @@ fn main() -> Result<(), String> {
     println!("A bar running from -1 % to 120 % clipped to [0, 1]");
 
     // create bar
-    let mut progressbar = progressing::Bar::new();
+    let mut progressbar = progressing::ClippingBar::new();
     progressbar.set_bar_len(30);
     progressbar.set_prefix("  Progress: ");
 
