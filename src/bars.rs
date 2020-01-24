@@ -153,7 +153,7 @@ impl Bar for ClampingBar {
         self.bar_len = new_bar_len;
     }
 
-    fn set(&mut self, mut new_progress: Self::Progress) -> &mut Self {
+    fn set(&mut self, mut new_progress: f32) -> &mut Self {
         if new_progress < 0.0 {
             new_progress = 0.0;
         }
@@ -164,7 +164,7 @@ impl Bar for ClampingBar {
         self
     }
 
-    fn add(&mut self, delta: Self::Progress) -> &mut Self {
+    fn add(&mut self, delta: f32) -> &mut Self {
         self.set(self.progress + delta)
     }
 }
@@ -248,7 +248,7 @@ impl Bar for MappingBar<u32> {
         self.bar.set_bar_len(new_bar_len)
     }
 
-    fn set(&mut self, new_progress: Self::Progress) -> &mut Self {
+    fn set(&mut self, new_progress: u32) -> &mut Self {
         self.k = new_progress;
 
         // calculate new progress
@@ -261,7 +261,7 @@ impl Bar for MappingBar<u32> {
         self
     }
 
-    fn add(&mut self, delta: Self::Progress) -> &mut Self {
+    fn add(&mut self, delta: u32) -> &mut Self {
         self.set(self.k + delta)
     }
 }
@@ -305,7 +305,7 @@ impl Bar for MappingBar<i32> {
         self.bar.set_bar_len(new_bar_len)
     }
 
-    fn set(&mut self, new_progress: Self::Progress) -> &mut Self {
+    fn set(&mut self, new_progress: i32) -> &mut Self {
         self.k = new_progress;
 
         // calculate new progress
@@ -318,7 +318,7 @@ impl Bar for MappingBar<i32> {
         self
     }
 
-    fn add(&mut self, delta: Self::Progress) -> &mut Self {
+    fn add(&mut self, delta: i32) -> &mut Self {
         self.set(self.k + delta)
     }
 }
@@ -402,13 +402,13 @@ impl Bar for BernoulliBar {
         self.bar.set_bar_len(new_bar_len)
     }
 
-    fn set(&mut self, outcome: Self::Progress) -> &mut Self {
+    fn set(&mut self, outcome: BernoulliProgress) -> &mut Self {
         self.bar.set(outcome.successes);
         self.attempts = outcome.attempts;
         self
     }
 
-    fn add(&mut self, outcome: Self::Progress) -> &mut Self {
+    fn add(&mut self, outcome: BernoulliProgress) -> &mut Self {
         let new_progress = BernoulliProgress {
             successes: self.bar.k + outcome.successes,
             attempts: self.attempts + outcome.attempts,
