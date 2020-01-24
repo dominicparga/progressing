@@ -346,6 +346,7 @@ impl fmt::Display for MappingBar<i32> {
 //------------------------------------------------------------------------------------------------//
 // bar counting success and failures
 
+#[derive(Copy, Clone)]
 pub struct BernoulliProgress {
     pub successes: u32,
     pub attempts: u32,
@@ -396,6 +397,12 @@ impl ops::Add for BernoulliProgress {
             successes: self.successes + other.successes,
             attempts: self.attempts + other.attempts,
         }
+    }
+}
+
+impl ops::AddAssign for BernoulliProgress {
+    fn add_assign(&mut self, other: Self) {
+        *self = *self + other;
     }
 }
 
