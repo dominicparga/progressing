@@ -89,7 +89,7 @@ fn bernoulli() -> Result<(), String> {
     for value in min_value..(max_value + 1) {
         // job is successful if value is even
         let is_successful = value % 2 == 0;
-        progressbar.add(is_successful.into()).reprint()?;
+        progressbar.add(is_successful).reprint()?;
 
         // sleep for visual effects ;)
         thread::sleep(time::Duration::from_millis(30));

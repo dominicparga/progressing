@@ -81,10 +81,10 @@ pub trait Bar: fmt::Display {
     fn progress(&self) -> Self::Progress;
 
     /// Sets the progress to the given value
-    fn set(&mut self, new_progress: Self::Progress) -> &mut Self;
+    fn set<P: Into<Self::Progress>>(&mut self, new_progress: P) -> &mut Self;
 
     /// Adds the given progress to the current progress
-    fn add(&mut self, delta: Self::Progress) -> &mut Self;
+    fn add<P: Into<Self::Progress>>(&mut self, delta: P) -> &mut Self;
 }
 
 //------------------------------------------------------------------------------------------------//
@@ -159,7 +159,9 @@ impl Bar for ClampingBar {
         self.progress
     }
 
-    fn set(&mut self, mut new_progress: f32) -> &mut Self {
+    fn set<P: Into<f32>>(&mut self, new_progress: P) -> &mut Self {
+        let mut new_progress = new_progress.into();
+
         if new_progress < 0.0 {
             new_progress = 0.0;
         }
@@ -170,8 +172,8 @@ impl Bar for ClampingBar {
         self
     }
 
-    fn add(&mut self, delta: f32) -> &mut Self {
-        self.set(self.progress + delta)
+    fn add<P: Into<f32>>(&mut self, delta: P) -> &mut Self {
+        self.set(self.progress + delta.into())
     }
 }
 
@@ -258,7 +260,8 @@ impl Bar for MappingBar<u32> {
         self.k
     }
 
-    fn set(&mut self, new_progress: u32) -> &mut Self {
+    fn set<P: Into<u32>>(&mut self, new_progress: P) -> &mut Self {
+        let new_progress = new_progress.into();
         self.k = new_progress;
 
         // calculate new progress
@@ -271,8 +274,8 @@ impl Bar for MappingBar<u32> {
         self
     }
 
-    fn add(&mut self, delta: u32) -> &mut Self {
-        self.set(self.k + delta)
+    fn add<P: Into<u32>>(&mut self, delta: P) -> &mut Self {
+        self.set(self.k + delta.into())
     }
 }
 
@@ -319,7 +322,8 @@ impl Bar for MappingBar<i32> {
         self.k
     }
 
-    fn set(&mut self, new_progress: i32) -> &mut Self {
+    fn set<P: Into<i32>>(&mut self, new_progress: P) -> &mut Self {
+        let new_progress = new_progress.into();
         self.k = new_progress;
 
         // calculate new progress
@@ -332,8 +336,8 @@ impl Bar for MappingBar<i32> {
         self
     }
 
-    fn add(&mut self, delta: i32) -> &mut Self {
-        self.set(self.k + delta)
+    fn add<P: Into<i32>>(&mut self, delta: P) -> &mut Self {
+        self.set(self.k + delta.into())
     }
 }
 
@@ -356,7 +360,7 @@ impl BernoulliProgress {
     pub fn new() -> Self {
         BernoulliProgress {
             successes: 0,
-            attempts: 0
+            attempts: 0,
         }
     }
 }
@@ -365,7 +369,7 @@ impl From<(u32, u32)> for BernoulliProgress {
     fn from((successes, attempts): (u32, u32)) -> Self {
         BernoulliProgress {
             successes,
-            attempts
+            attempts,
         }
     }
 }
@@ -374,7 +378,7 @@ impl From<u32> for BernoulliProgress {
     fn from(successes: u32) -> Self {
         BernoulliProgress {
             successes,
-            attempts: successes
+            attempts: successes,
         }
     }
 }
@@ -384,7 +388,7 @@ impl From<bool> for BernoulliProgress {
         let successes = if is_successful { 1 } else { 0 };
         BernoulliProgress {
             successes,
-            attempts: 1
+            attempts: 1,
         }
     }
 }
@@ -450,14 +454,15 @@ impl Bar for BernoulliBar {
         }
     }
 
-    fn set(&mut self, outcome: BernoulliProgress) -> &mut Self {
+    fn set<P: Into<BernoulliProgress>>(&mut self, outcome: P) -> &mut Self {
+        let outcome = outcome.into();
         self.bar.set(outcome.successes);
         self.attempts = outcome.attempts;
         self
     }
 
-    fn add(&mut self, outcome: BernoulliProgress) -> &mut Self {
-        self.set(self.progress() + outcome)
+    fn add<P: Into<BernoulliProgress>>(&mut self, outcome: P) -> &mut Self {
+        self.set(self.progress() + outcome.into())
     }
 }
 
