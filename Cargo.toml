@@ -25,3 +25,7 @@ clap = "2" # cmdline-parsing
 [[example]]
 name = "default-bar"
 path = "examples/default_bar.rs"
+
+[[example]]
+name = "mapping-bar"
+path = "examples/mapping_bar.rs"

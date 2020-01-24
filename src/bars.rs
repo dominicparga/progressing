@@ -3,7 +3,6 @@
 
 use io::stdout;
 use io::Write;
-use std::cmp::max;
 use std::cmp::min;
 use std::io;
 
@@ -139,7 +138,7 @@ impl ClippingBar {
         if new_progress < 0.0 {
             new_progress = 0.0;
         }
-        if new_progress > 1.0 {
+        if 1.0 < new_progress {
             new_progress = 1.0;
         }
         self.progress = new_progress;
@@ -194,13 +193,13 @@ impl Bar for ClippingBar {
 }
 
 //------------------------------------------------------------------------------------------------//
-// bar mapping to [min; max]
+// bar mapping [min, max] to [0, 1]
 
 #[derive(Debug)]
 pub struct MappingBar {
     bar: ClippingBar,
-    k_min: u32,
-    k_max: u32,
+    k_min: i32,
+    k_max: i32,
 }
 
 impl Default for MappingBar {
@@ -219,11 +218,81 @@ impl MappingBar {
             ..Default::default()
         }
     }
+
+    pub fn from(k_min: i32, k_max: i32) -> MappingBar {
+        if k_max < k_min {
+            MappingBar {
+                bar: ClippingBar::new(),
+                k_min: k_max,
+                k_max: k_min,
+            }
+        } else {
+            MappingBar {
+                bar: ClippingBar::new(),
+                k_min,
+                k_max,
+            }
+        }
+    }
+
+    pub fn from_all(bar: ClippingBar, k_min: i32, k_max: i32) -> MappingBar {
+        if k_max < k_min {
+            MappingBar {
+                bar,
+                k_min: k_max,
+                k_max: k_min,
+            }
+        } else {
+            MappingBar { bar, k_min, k_max }
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------//
+    // imitate methods from ClippingBar
+
+    pub fn update_progress(&mut self, mut k: i32) -> &mut Self {
+        // clip to [0, 1]
+        if k < self.k_min {
+            k = self.k_min;
+        }
+        if self.k_max < k {
+            k = self.k_max;
+        }
+
+        // calculate new progress
+        let k_min = self.k_min as f32;
+        let k_max = self.k_max as f32;
+        let k = k as f32;
+        self.bar.progress = (k - k_min) / (k_max - k_min);
+
+        // return self
+        self
+    }
+
+    pub fn render_with(&mut self, k: i32) -> String {
+        self.update_progress(k).render()
+    }
+
+    pub fn print_with(&mut self, k: i32) -> Result<(), String> {
+        self.update_progress(k).print()
+    }
+
+    pub fn println_with(&mut self, k: i32) -> Result<(), String> {
+        self.update_progress(k).println()
+    }
+
+    pub fn reprint_with(&mut self, k: i32) -> Result<(), String> {
+        self.update_progress(k).reprint()
+    }
+
+    pub fn reprintln_with(&mut self, k: i32) -> Result<(), String> {
+        self.update_progress(k).reprintln()
+    }
 }
 
 impl Bar for MappingBar {
     /// Progress is clipped to `[0, 1]`.
     fn render(&self) -> String {
-        "".to_owned()
+        self.bar.render()
     }
 }
