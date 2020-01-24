@@ -3,6 +3,7 @@
 
 use io::stdout;
 use io::Write;
+use std::cmp::max;
 use std::cmp::min;
 use std::io;
 
@@ -134,7 +135,13 @@ impl ClippingBar {
         self.left_bracket.len() + self.right_bracket.len()
     }
 
-    pub fn update_progress(&mut self, new_progress: f32) -> &mut Self {
+    pub fn update_progress(&mut self, mut new_progress: f32) -> &mut Self {
+        if new_progress < 0.0 {
+            new_progress = 0.0;
+        }
+        if new_progress > 1.0 {
+            new_progress = 1.0;
+        }
         self.progress = new_progress;
         self
     }
@@ -169,10 +176,7 @@ impl Bar for ClippingBar {
         // calc progress
         // -> bar needs to be calculated
         // -> no brackets involved
-        let reached = {
-            let reached = (self.progress * (self.inner_bar_len() as f32)) as usize;
-            min(self.inner_bar_len(), reached)
-        };
+        let reached = (self.progress * (self.inner_bar_len() as f32)) as usize;
 
         let line = self.line.repeat(reached);
         // crop hat if end of bar is reached

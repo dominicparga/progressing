@@ -15,14 +15,20 @@ use progressing::Bar;
 fn main() -> Result<(), String> {
     //--------------------------------------------------------------------------------------------//
 
+    let min_value = -20;
+    let max_value = 120;
+
     println!();
-    println!("A bar running from -1 % to 120 % clipped to [0, 1]");
+    println!(
+        "A bar running from {} % to {} % clipped to [0, 1]",
+        min_value, max_value
+    );
 
     // create bar
     let mut progressbar = progressing::ClippingBar::new();
 
     // do the job and show progress
-    for value in -20..121 {
+    for value in min_value..(max_value + 1) {
         progressbar.reprint_with(value as f32 / 100.0)?;
 
         // sleep for visual effects ;)
