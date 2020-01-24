@@ -4,17 +4,21 @@
 use io::stdout;
 use io::Write;
 use std::cmp::min;
+use std::fmt;
 use std::io;
+use std::ops;
 
 //------------------------------------------------------------------------------------------------//
 
-pub trait Bar {
+pub trait Bar: fmt::Display {
     /// Returns the printable progressbar.
-    fn render(&self) -> String;
+    fn display(&self) -> String {
+        format!("{}", self)
+    }
 
-    fn write_to_stdout(&self, msg: &str) -> Result<(), String> {
+    fn write_to_stdout<S: Into<String>>(&self, msg: S) -> Result<(), String> {
         let mut output = stdout();
-        match output.write(msg.as_bytes()) {
+        match output.write(msg.into().as_bytes()) {
             Ok(_) => (),
             Err(e) => return Err(format!("{}", e)),
         };
@@ -26,62 +30,60 @@ pub trait Bar {
         Ok(())
     }
 
-    /// Progress is clipped to `[0, 1]`.
-    ///
     /// Prints a progressbar using given progress.
     /// Does not print a newline-character.
     /// Use `println(...)` for printing a newline-character.
     /// Use `reprint(...)` for overwriting the current stdout-line.
     ///
-    /// Returns error if writing to `stdout` throws an error.
+    /// Will return error if writing to `stdout` throws an error.
     fn print(&self) -> Result<(), String> {
-        let msg = format!("{}", self.render());
-        self.write_to_stdout(msg.as_ref())
+        self.write_to_stdout(format!("{}", self))
     }
 
-    /// Progress is clipped to `[0, 1]`.
-    ///
     /// Prints a progressbar using given progress.
     /// In additon to `print(...)`, this function prints a new line.
     /// Use `reprintln(...)` for overwriting the current stdout-line.
     ///
-    /// Returns error if writing to `stdout` throws an error.
+    /// Will return error if writing to `stdout` throws an error.
     fn println(&self) -> Result<(), String> {
-        let msg = format!("{}\n", self.render());
-        self.write_to_stdout(msg.as_ref())
+        self.write_to_stdout(format!("{}\n", self))
     }
 
-    /// Progress is clipped to `[0, 1]`.
-    ///
     /// Prints the current line again with progressbar using given progress.
     /// Does not print a newline-character.
     /// Use `reprintln(...)` for reprinting with a newline-character.
     ///
-    /// Returns error if writing to `stdout` throws an error.
+    /// Will return error if writing to `stdout` throws an error.
     fn reprint(&self) -> Result<(), String> {
-        let msg = format!("\r{}", self.render());
-        self.write_to_stdout(msg.as_ref())
+        self.write_to_stdout(format!("\r{}", self))
     }
 
-    /// Progress is clipped to `[0, 1]`.
-    ///
     /// Prints the current line again with progressbar using given progress.
     /// In additon to `reprint(...)`, this function prints a new line.
     /// Use `println(...)` for always printing a newline-character.
     ///
-    /// Returns error if writing to `stdout` throws an error.
+    /// Will return error if writing to `stdout` throws an error.
     fn reprintln(&self) -> Result<(), String> {
-        let msg = format!("\r{}\n", self.render());
-        self.write_to_stdout(msg.as_ref())
+        self.write_to_stdout(format!("\r{}\n", self))
     }
+
+    //--------------------------------------------------------------------------------------------//
+
+    type Progress;
+
+    /// Sets the progress to the given value
+    fn update(&mut self, new_progress: Self::Progress) -> &mut Self;
+
+    /// Adds the given progress to the current progress
+    fn add(&mut self, delta: Self::Progress) -> &mut Self;
 }
 
 //------------------------------------------------------------------------------------------------//
-// default bar clipping to [0; 1]
+// default bar clamping to [0; 1]
 
 /// Only optimized for single-length-strings, but strings are more handy than chars.
 #[derive(Debug)]
-pub struct ClippingBar {
+pub struct ClampingBar {
     bar_len: usize,
     prefix: String,
     left_bracket: String,
@@ -92,9 +94,9 @@ pub struct ClippingBar {
     progress: f32,
 }
 
-impl Default for ClippingBar {
+impl Default for ClampingBar {
     fn default() -> Self {
-        ClippingBar {
+        ClampingBar {
             bar_len: 72,
             prefix: String::from(""),
             left_bracket: String::from("["),
@@ -107,15 +109,15 @@ impl Default for ClippingBar {
     }
 }
 
-impl ClippingBar {
-    pub fn new() -> ClippingBar {
-        ClippingBar {
+impl ClampingBar {
+    pub fn new() -> ClampingBar {
+        ClampingBar {
             ..Default::default()
         }
     }
 
-    pub fn from(bar_len: usize, prefix: String) -> ClippingBar {
-        ClippingBar {
+    pub fn from(bar_len: usize, prefix: String) -> ClampingBar {
+        ClampingBar {
             bar_len,
             prefix,
             ..Default::default()
@@ -133,8 +135,12 @@ impl ClippingBar {
     fn brackets_len(&self) -> usize {
         self.left_bracket.len() + self.right_bracket.len()
     }
+}
 
-    pub fn update_progress(&mut self, mut new_progress: f32) -> &mut Self {
+impl Bar for ClampingBar {
+    type Progress = f32;
+
+    fn update(&mut self, mut new_progress: Self::Progress) -> &mut Self {
         if new_progress < 0.0 {
             new_progress = 0.0;
         }
@@ -145,33 +151,14 @@ impl ClippingBar {
         self
     }
 
-    //--------------------------------------------------------------------------------------------//
-    // imitate trait-methods
-
-    pub fn render_with(&mut self, new_progress: f32) -> String {
-        self.update_progress(new_progress).render()
-    }
-
-    pub fn print_with(&mut self, new_progress: f32) -> Result<(), String> {
-        self.update_progress(new_progress).print()
-    }
-
-    pub fn println_with(&mut self, new_progress: f32) -> Result<(), String> {
-        self.update_progress(new_progress).println()
-    }
-
-    pub fn reprint_with(&mut self, new_progress: f32) -> Result<(), String> {
-        self.update_progress(new_progress).reprint()
-    }
-
-    pub fn reprintln_with(&mut self, new_progress: f32) -> Result<(), String> {
-        self.update_progress(new_progress).reprintln()
+    fn add(&mut self, delta: Self::Progress) -> &mut Self {
+        self.update(self.progress + delta)
     }
 }
 
-impl Bar for ClippingBar {
-    /// Progress is clipped to `[0, 1]`.
-    fn render(&self) -> String {
+impl fmt::Display for ClampingBar {
+    /// Progress is clamped to `[0, 1]`.
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // calc progress
         // -> bar needs to be calculated
         // -> no brackets involved
@@ -185,7 +172,8 @@ impl Bar for ClippingBar {
             .empty_line
             .repeat(self.inner_bar_len() - reached - hat.len());
         let bar = format!("{}{}{}", line, hat, empty_line);
-        format!(
+        write!(
+            f,
             "{}{}{}{}",
             self.prefix, self.left_bracket, bar, self.right_bracket
         )
@@ -196,103 +184,226 @@ impl Bar for ClippingBar {
 // bar mapping [min, max] to [0, 1]
 
 #[derive(Debug)]
-pub struct MappingBar {
-    bar: ClippingBar,
-    k_min: i32,
-    k_max: i32,
+pub struct MappingBar<N> {
+    bar: ClampingBar,
+    range: ops::RangeInclusive<N>,
+    k: N,
 }
 
-impl Default for MappingBar {
-    fn default() -> Self {
+impl<N> MappingBar<N>
+where
+    MappingBar<N>: Default,
+{
+    pub fn new(range: ops::RangeInclusive<N>) -> MappingBar<N> {
         MappingBar {
-            bar: ClippingBar::new(),
-            k_min: 0,
-            k_max: 100,
-        }
-    }
-}
-
-impl MappingBar {
-    pub fn new() -> MappingBar {
-        MappingBar {
+            range,
             ..Default::default()
         }
     }
 
-    pub fn from(k_min: i32, k_max: i32) -> MappingBar {
-        if k_max < k_min {
-            MappingBar {
-                bar: ClippingBar::new(),
-                k_min: k_max,
-                k_max: k_min,
-            }
-        } else {
-            MappingBar {
-                bar: ClippingBar::new(),
-                k_min,
-                k_max,
-            }
+    pub fn from_all(bar: ClampingBar, range: ops::RangeInclusive<N>) -> MappingBar<N> {
+        MappingBar {
+            bar,
+            range,
+            ..Default::default()
         }
     }
+}
 
-    pub fn from_all(bar: ClippingBar, k_min: i32, k_max: i32) -> MappingBar {
-        if k_max < k_min {
-            MappingBar {
-                bar,
-                k_min: k_max,
-                k_max: k_min,
-            }
-        } else {
-            MappingBar { bar, k_min, k_max }
+//------------------------------------------------------------------------------------------------//
+
+impl Default for MappingBar<u32> {
+    fn default() -> Self {
+        MappingBar {
+            bar: ClampingBar::default(),
+            range: 0..=100,
+            k: 0,
         }
     }
+}
 
-    //--------------------------------------------------------------------------------------------//
-    // imitate methods from ClippingBar
+impl MappingBar<u32> {
+    fn start(&self) -> u32 {
+        *(self.range.start())
+    }
 
-    pub fn update_progress(&mut self, mut k: i32) -> &mut Self {
-        // clip to [0, 1]
-        if k < self.k_min {
-            k = self.k_min;
-        }
-        if self.k_max < k {
-            k = self.k_max;
-        }
+    fn end(&self) -> u32 {
+        *(self.range.end())
+    }
+}
+
+impl Bar for MappingBar<u32> {
+    type Progress = u32;
+
+    fn update(&mut self, new_progress: Self::Progress) -> &mut Self {
+        self.k = new_progress;
 
         // calculate new progress
-        let k_min = self.k_min as f32;
-        let k_max = self.k_max as f32;
-        let k = k as f32;
-        self.bar.progress = (k - k_min) / (k_max - k_min);
+        let k_min = self.start() as f32;
+        let k_max = self.end() as f32;
+        let k = new_progress as f32;
+        self.bar.update((k - k_min) / (k_max - k_min));
 
         // return self
         self
     }
 
-    pub fn render_with(&mut self, k: i32) -> String {
-        self.update_progress(k).render()
-    }
-
-    pub fn print_with(&mut self, k: i32) -> Result<(), String> {
-        self.update_progress(k).print()
-    }
-
-    pub fn println_with(&mut self, k: i32) -> Result<(), String> {
-        self.update_progress(k).println()
-    }
-
-    pub fn reprint_with(&mut self, k: i32) -> Result<(), String> {
-        self.update_progress(k).reprint()
-    }
-
-    pub fn reprintln_with(&mut self, k: i32) -> Result<(), String> {
-        self.update_progress(k).reprintln()
+    fn add(&mut self, delta: Self::Progress) -> &mut Self {
+        self.update(self.k + delta)
     }
 }
 
-impl Bar for MappingBar {
-    /// Progress is clipped to `[0, 1]`.
-    fn render(&self) -> String {
-        self.bar.render()
+impl fmt::Display for MappingBar<u32> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{} ({} / {})", self.bar, self.k, self.end())
+    }
+}
+
+//------------------------------------------------------------------------------------------------//
+
+impl Default for MappingBar<i32> {
+    fn default() -> Self {
+        MappingBar {
+            bar: ClampingBar::default(),
+            range: 0..=100,
+            k: 0,
+        }
+    }
+}
+
+impl MappingBar<i32> {
+    fn start(&self) -> i32 {
+        *(self.range.start())
+    }
+
+    fn end(&self) -> i32 {
+        *(self.range.end())
+    }
+}
+
+impl Bar for MappingBar<i32> {
+    type Progress = i32;
+
+    fn update(&mut self, new_progress: Self::Progress) -> &mut Self {
+        self.k = new_progress;
+
+        // calculate new progress
+        let k_min = self.start() as f32;
+        let k_max = self.end() as f32;
+        let k = new_progress as f32;
+        self.bar.update((k - k_min) / (k_max - k_min));
+
+        // return self
+        self
+    }
+
+    fn add(&mut self, delta: Self::Progress) -> &mut Self {
+        self.update(self.k + delta)
+    }
+}
+
+impl fmt::Display for MappingBar<i32> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{} ({} / {})", self.bar, self.k, self.end())
+    }
+}
+
+//------------------------------------------------------------------------------------------------//
+// bar counting success and failures
+
+pub struct BernoulliProgress {
+    pub successes: u32,
+    pub attempts: u32,
+}
+
+impl From<(u32, u32)> for BernoulliProgress {
+    fn from((successes, attempts): (u32, u32)) -> Self {
+        BernoulliProgress {
+            successes,
+            attempts,
+        }
+    }
+}
+
+impl From<u32> for BernoulliProgress {
+    fn from(successes: u32) -> Self {
+        BernoulliProgress {
+            successes,
+            attempts: successes,
+        }
+    }
+}
+
+impl From<bool> for BernoulliProgress {
+    fn from(is_successful: bool) -> Self {
+        let successes = if is_successful { 1 } else { 0 };
+        BernoulliProgress {
+            successes,
+            attempts: 1,
+        }
+    }
+}
+
+//------------------------------------------------------------------------------------------------//
+
+#[derive(Debug)]
+pub struct BernoulliBar {
+    bar: MappingBar<u32>,
+    attempts: u32,
+}
+
+impl Default for BernoulliBar {
+    fn default() -> Self {
+        BernoulliBar {
+            bar: MappingBar::default(),
+            attempts: 0,
+        }
+    }
+}
+
+impl BernoulliBar {
+    pub fn from_goal(n: u32) -> BernoulliBar {
+        BernoulliBar {
+            bar: MappingBar::new(0..=n),
+            ..Default::default()
+        }
+    }
+
+    pub fn from_bar(bar: MappingBar<u32>) -> BernoulliBar {
+        BernoulliBar {
+            bar,
+            ..Default::default()
+        }
+    }
+}
+
+impl Bar for BernoulliBar {
+    type Progress = BernoulliProgress;
+
+    fn update(&mut self, outcome: Self::Progress) -> &mut Self {
+        self.bar.update(outcome.successes);
+        self.attempts = outcome.attempts;
+        self
+    }
+
+    fn add(&mut self, outcome: Self::Progress) -> &mut Self {
+        let new_progress = BernoulliProgress {
+            successes: self.bar.k + outcome.successes,
+            attempts: self.attempts + outcome.attempts,
+        };
+        self.update(new_progress)
+    }
+}
+
+impl fmt::Display for BernoulliBar {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "{} ({} / {} # {})",
+            self.bar.bar,
+            self.bar.k,
+            self.bar.end(),
+            self.attempts
+        )
     }
 }
