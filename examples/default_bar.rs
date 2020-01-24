@@ -20,17 +20,9 @@ fn main() -> Result<(), String> {
 
     // create bar
     let mut progressbar = progressing::ClippingBar::new();
-    progressbar.set_bar_len(30);
-    progressbar.set_prefix("  Progress: ");
 
     // do the job and show progress
     for value in -20..121 {
-        // show clipping explicitely
-        if value < 0 || 100 < value {
-            progressbar.set_suffix(&format!(" ({} %)", value));
-        } else {
-            progressbar.set_suffix("");
-        }
         progressbar.reprint_with(value as f32 / 100.0)?;
 
         // sleep for visual effects ;)

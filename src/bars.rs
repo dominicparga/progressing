@@ -84,7 +84,6 @@ pub trait Bar {
 pub struct ClippingBar {
     bar_len: usize,
     prefix: String,
-    suffix: String,
     left_bracket: String,
     right_bracket: String,
     line: String,
@@ -98,7 +97,6 @@ impl Default for ClippingBar {
         ClippingBar {
             bar_len: 72,
             prefix: String::from(""),
-            suffix: String::from(""),
             left_bracket: String::from("["),
             right_bracket: String::from("]"),
             line: String::from("="),
@@ -116,28 +114,16 @@ impl ClippingBar {
         }
     }
 
-    pub fn prefix(&self) -> &str {
-        &self.prefix
+    pub fn from(bar_len: usize, prefix: String) -> ClippingBar {
+        ClippingBar {
+            bar_len,
+            prefix,
+            ..Default::default()
+        }
     }
 
-    pub fn set_prefix<S: Into<String>>(&mut self, new_prefix: S) {
-        self.prefix = new_prefix.into();
-    }
-
-    pub fn suffix(&self) -> &str {
-        &self.suffix
-    }
-
-    pub fn set_suffix<S: Into<String>>(&mut self, new_suffix: S) {
-        self.suffix = new_suffix.into();
-    }
-
-    pub fn bar_len(&self) -> usize {
+    fn bar_len(&self) -> usize {
         self.bar_len
-    }
-
-    pub fn set_bar_len(&mut self, new_bar_len: usize) {
-        self.bar_len = new_bar_len;
     }
 
     fn inner_bar_len(&self) -> usize {
@@ -197,8 +183,8 @@ impl Bar for ClippingBar {
             .repeat(self.inner_bar_len() - reached - hat.len());
         let bar = format!("{}{}{}", line, hat, empty_line);
         format!(
-            "{}{}{}{}{}",
-            self.prefix, self.left_bracket, bar, self.right_bracket, self.suffix
+            "{}{}{}{}",
+            self.prefix, self.left_bracket, bar, self.right_bracket
         )
     }
 }
