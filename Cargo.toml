@@ -9,9 +9,9 @@ authors = [
 ]
 repository = "https://github.com/dominicparga/progressing"
 readme = "README.md"
-# keywords = ["", "", "", "", ""]
-# categories = ["", "", "", "", ""]
-license = "Apache-2.0"
+keywords = ["progressbar", "progress", "pbr", "logging", "counting"]
+categories = ["Command-line interface", "", "", "", ""]
+license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
