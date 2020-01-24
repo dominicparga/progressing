@@ -10,7 +10,7 @@ use std::io;
 
 pub trait Bar {
     /// Returns the printable progressbar.
-    fn render(&self, progress: f32) -> String;
+    fn render(&self) -> String;
 
     fn write_to_stdout(&self, msg: &str) -> Result<(), String> {
         let mut output = stdout();
@@ -34,8 +34,8 @@ pub trait Bar {
     /// Use `reprint(...)` for overwriting the current stdout-line.
     ///
     /// Returns error if writing to `stdout` throws an error.
-    fn print(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("{}", self.render(progress));
+    fn print(&self) -> Result<(), String> {
+        let msg = format!("{}", self.render());
         self.write_to_stdout(msg.as_ref())
     }
 
@@ -46,8 +46,8 @@ pub trait Bar {
     /// Use `reprintln(...)` for overwriting the current stdout-line.
     ///
     /// Returns error if writing to `stdout` throws an error.
-    fn println(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("{}\n", self.render(progress));
+    fn println(&self) -> Result<(), String> {
+        let msg = format!("{}\n", self.render());
         self.write_to_stdout(msg.as_ref())
     }
 
@@ -58,8 +58,8 @@ pub trait Bar {
     /// Use `reprintln(...)` for reprinting with a newline-character.
     ///
     /// Returns error if writing to `stdout` throws an error.
-    fn reprint(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("\r{}", self.render(progress));
+    fn reprint(&self) -> Result<(), String> {
+        let msg = format!("\r{}", self.render());
         self.write_to_stdout(msg.as_ref())
     }
 
@@ -70,8 +70,8 @@ pub trait Bar {
     /// Use `println(...)` for always printing a newline-character.
     ///
     /// Returns error if writing to `stdout` throws an error.
-    fn reprintln(&self, progress: f32) -> Result<(), String> {
-        let msg = format!("\r{}\n", self.render(progress));
+    fn reprintln(&self) -> Result<(), String> {
+        let msg = format!("\r{}\n", self.render());
         self.write_to_stdout(msg.as_ref())
     }
 }
@@ -90,6 +90,7 @@ pub struct ClippingBar {
     line: String,
     empty_line: String,
     hat: String,
+    progress: f32,
 }
 
 impl Default for ClippingBar {
@@ -103,6 +104,7 @@ impl Default for ClippingBar {
             line: String::from("="),
             empty_line: String::from(" "),
             hat: String::from(">"),
+            progress: 0.0,
         }
     }
 }
@@ -145,16 +147,44 @@ impl ClippingBar {
     fn brackets_len(&self) -> usize {
         self.left_bracket.len() + self.right_bracket.len()
     }
+
+    pub fn update_progress(&mut self, new_progress: f32) -> &mut Self {
+        self.progress = new_progress;
+        self
+    }
+
+    //--------------------------------------------------------------------------------------------//
+    // imitate trait-methods
+
+    pub fn render_with(&mut self, new_progress: f32) -> String {
+        self.update_progress(new_progress).render()
+    }
+
+    pub fn print_with(&mut self, new_progress: f32) -> Result<(), String> {
+        self.update_progress(new_progress).print()
+    }
+
+    pub fn println_with(&mut self, new_progress: f32) -> Result<(), String> {
+        self.update_progress(new_progress).println()
+    }
+
+    pub fn reprint_with(&mut self, new_progress: f32) -> Result<(), String> {
+        self.update_progress(new_progress).reprint()
+    }
+
+    pub fn reprintln_with(&mut self, new_progress: f32) -> Result<(), String> {
+        self.update_progress(new_progress).reprintln()
+    }
 }
 
 impl Bar for ClippingBar {
     /// Progress is clipped to `[0, 1]`.
-    fn render(&self, progress: f32) -> String {
+    fn render(&self) -> String {
         // calc progress
         // -> bar needs to be calculated
         // -> no brackets involved
         let reached = {
-            let reached = (progress * (self.inner_bar_len() as f32)) as usize;
+            let reached = (self.progress * (self.inner_bar_len() as f32)) as usize;
             min(self.inner_bar_len(), reached)
         };
 
@@ -198,5 +228,12 @@ impl MappingBar {
         MappingBar {
             ..Default::default()
         }
+    }
+}
+
+impl Bar for MappingBar {
+    /// Progress is clipped to `[0, 1]`.
+    fn render(&self) -> String {
+        "".to_owned()
     }
 }

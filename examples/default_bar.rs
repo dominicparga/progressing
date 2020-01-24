@@ -24,18 +24,20 @@ fn main() -> Result<(), String> {
     progressbar.set_prefix("  Progress: ");
 
     // do the job and show progress
-    for value in -1..121 {
+    for value in -20..121 {
         // show clipping explicitely
-        if value > 100 {
+        if value < 0 || 100 < value {
             progressbar.set_suffix(&format!(" ({} %)", value));
+        } else {
+            progressbar.set_suffix("");
         }
-        progressbar.reprint(value as f32 / 100.0)?;
+        progressbar.reprint_with(value as f32 / 100.0)?;
 
         // sleep for visual effects ;)
         thread::sleep(time::Duration::from_millis(50));
     }
     // add new line to finished progressbar
-    progressbar.reprintln(1.0)?;
+    progressbar.reprintln()?;
 
     Ok(())
 }
