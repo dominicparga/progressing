@@ -11,6 +11,7 @@ use progressing;
 use progressing::Bar;
 
 //------------------------------------------------------------------------------------------------//
+// different examples for different use-cases
 
 fn clamped() -> Result<(), String> {
     let min_value = -40;
@@ -37,6 +38,8 @@ fn clamped() -> Result<(), String> {
     progressbar.reprintln()
 }
 
+//------------------------------------------------------------------------------------------------//
+
 fn mapped() -> Result<(), String> {
     let min_value = -10;
     let max_value = 100;
@@ -61,6 +64,8 @@ fn mapped() -> Result<(), String> {
     // add new line to finished progressbar
     progressbar.reprintln()
 }
+
+//------------------------------------------------------------------------------------------------//
 
 fn bernoulli() -> Result<(), String> {
     let min_value = -50;
