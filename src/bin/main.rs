@@ -69,7 +69,10 @@ fn main() -> Result<(), ()> {
     setup_logging(matches.is_present("quiet"));
 
     if matches.args.len() == 0 {
-        println!("Execute '.../{} -h' (or 'cargo run -- -h') for more info.", env!("CARGO_PKG_NAME"));
+        println!(
+            "Execute '.../{} -h' (or 'cargo run -- -h') for more info.",
+            env!("CARGO_PKG_NAME")
+        );
     }
 
     Ok(())
