@@ -8,8 +8,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
-1. [v1.0.3](#v103)
-1. [v1.0.2](#v102)
+1. [v1.0.3](#v1_0_3)
+1. [v1.0.2](#v1_0_2)
 
 
 ## [Unreleased] <a name="unreleased"></a>
@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ### Changed
 
-\-
+- `ID`s in `CHANGELOG.md` since underscores (`_`) are preferred over dots (`.`) in `URL`s, but `v1103` could stand for `v11.0.3` and `v1.10.3`.
 
 
 ### Deprecated
@@ -48,11 +48,12 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 \-
 
 
-## [v1.0.3] <a name="v103"></a>
+## [v1.0.3] <a name="v1_0_3"></a>
 
 ### Added
 
 - Implement `CHANGELOG.md`
+
 
 ### Deprecated
 
@@ -60,7 +61,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Detailled documentation is missing, though examples are good.
 
 
-## [v1.0.2] <a name="v102"></a>
+## [v1.0.2] <a name="v1_0_2"></a>
 
 ### Added
 
