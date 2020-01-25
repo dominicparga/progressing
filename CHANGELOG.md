@@ -7,12 +7,12 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ## Table of contents
 
-1. [Unreleased](#Unreleased)
-1. [v1.0.3](#v1.0.3)
-1. [v1.0.2](#v1.0.2)
+1. [Unreleased](#unreleased)
+1. [v1.0.3](#v103)
+1. [v1.0.2](#v102)
 
 
-## [Unreleased]
+## [Unreleased] <a name="unreleased"></a>
 
 ### Added
 
@@ -48,7 +48,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 \-
 
 
-## [v1.0.3]
+## [v1.0.3] <a name="v103"></a>
 
 ### Added
 
@@ -60,7 +60,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Detailled documentation is missing, though examples are good.
 
 
-## [v1.0.2]
+## [v1.0.2] <a name="v102"></a>
 
 ### Added
 
@@ -79,15 +79,6 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - `CHANGELOG.md` is missing
 - `BernoulliProgress` has no constructing method like `new()` and no default-implementation.
 - Detailled documentation is missing, though examples are good.
-
-
-### Changed
-
-### Removed
-
-### Fixed
-
-### Security
 
 
 [keepachangelog]: https://keepachangelog.com/en/
