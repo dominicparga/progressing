@@ -31,6 +31,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ### Deprecated
 
 - Detailled documentation is missing, though examples are good.
+- Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
 
 
 ### Removed
