@@ -1,6 +1,6 @@
 [package]
 name = "progressing"
-version = "1.0.3"
+version = "2.0.0"
 description = "A lightweight, counting progress-bar for Rust"
 edition = "2018"
 
