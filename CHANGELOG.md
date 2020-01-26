@@ -8,11 +8,58 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
+1. [v2.0.1](#v2_0_1)
+1. [v2.0.0](#v2_0_0)
 1. [v1.0.3](#v1_0_3)
 1. [v1.0.2](#v1_0_2)
 
 
 ## [Unreleased] <a name="unreleased"></a>
+
+### Added
+
+\-
+
+
+### Changed
+
+\-
+
+
+### Deprecated
+
+\-
+
+
+### Removed
+
+\-
+
+
+### Fixed
+
+\-
+
+
+### Security
+
+\-
+
+
+## [v2.0.1] <a name="v2_0_1"></a>
+
+### Changed
+
+- Changelog has been edited accordingly.
+
+
+### Deprecated
+
+- Detailled documentation is missing, though examples are good.
+- Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
+
+
+## [v2.0.0] <a name="v2_0_0"></a>
 
 ### Added
 
@@ -32,21 +79,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
-
-
-### Removed
-
-\-
-
-
-### Fixed
-
-\-
-
-
-### Security
-
-\-
+- Changelog has been forgotten to adapt..
 
 
 ## [v1.0.3] <a name="v1_0_3"></a>
@@ -86,6 +119,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/
 [semver]: https://semver.org/
 
-[Unreleased]: https://github.com/dominicparga/progressing/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/dominicparga/progressing/compare/v2.0.1...HEAD
+[v2.0.1]: https://github.com/dominicparga/progressing/compare/v2.0.0...v2.0.1
+[v2.0.0]: https://github.com/dominicparga/progressing/compare/v1.0.3...v2.0.0
 [v1.0.3]: https://github.com/dominicparga/progressing/compare/v1.0.2...v1.0.3
 [v1.0.2]: https://github.com/dominicparga/progressing/releases/tag/v1.0.2
