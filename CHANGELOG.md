@@ -29,7 +29,9 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ### Deprecated
 
-\-
+- Detailled documentation is missing, though examples are good.
+- Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
+- Support for `GitHub-workflow` is missing, which can, besides testing, automatically deploy to `crates.io` and tag if `Cargo.toml` changes version.
 
 
 ### Removed
@@ -52,6 +54,11 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ### Fixed
 
 - `README.md` has had invalid code, which as been edited as in `examples`.
+
+### Deprecated
+
+- Detailled documentation is missing, though examples are good.
+- Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
 
 
 ## [v2.0.1] <a name="v2_0_1"></a>
