@@ -29,7 +29,7 @@ progressbar.set(4).reprintln()
 // [============>     ] (42 / 60 # 130)
 let mut progressbar = progressing::BernoulliBar::from_goal(60);
 progressbar.set_bar_len(20);
-progressbar.set((42, 130).into()).reprintln()
+progressbar.set((42, 130)).reprintln()
 ```
 
 
