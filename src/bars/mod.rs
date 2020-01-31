@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------------------------//
 // other modules
 
-mod mapping_bar;
-pub use mapping_bar::MappingBar;
+mod mapping;
+pub use mapping::MappingBar;
 use io::stdout;
 use io::Write;
 use std::cmp::min;
@@ -327,8 +327,8 @@ impl fmt::Display for BernoulliBar {
         write!(
             f,
             "{} ({} / {} # {})",
-            mapping_bar::inner_bar(&self.bar),
-            mapping_bar::inner_k(&self.bar),
+            mapping::inner_bar(&self.bar),
+            mapping::inner_k(&self.bar),
             self.bar.end(),
             self.attempts
         )
