@@ -20,12 +20,13 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ### Added
 
 - `GitHub`-workflow auto-testing and -publishing to `crates.io` if `Cargo.toml` changes version and tests are successful.
-- Support for `usize`
+- Add a little documentation to `struct`s with little examples from `simple`-example.
+- Add support for `usize` for `MappingBar`.
 
 
 ### Changed
 
-\-
+- Move `structs` in own `modules`.
 
 
 ### Deprecated
