@@ -72,6 +72,15 @@ impl ops::AddAssign for BernoulliProgress {
 
 //------------------------------------------------------------------------------------------------//
 
+/// Examples
+///
+/// ```
+/// // Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
+/// // [============>     ] (42 / 60 # 130)
+/// let mut progressbar = progressing::BernoulliBar::from_goal(60);
+/// progressbar.set_bar_len(20);
+/// progressbar.set((42, 130)).reprintln()
+/// ```
 #[derive(Debug)]
 pub struct BernoulliBar {
     bar: MappingBar<u32>,

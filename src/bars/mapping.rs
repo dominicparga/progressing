@@ -20,6 +20,15 @@ pub fn inner_k<N>(mapping_bar: &MappingBar<N>) -> &N {
 //------------------------------------------------------------------------------------------------//
 // bar mapping [min, max] to [0, 1]
 
+/// Examples
+///
+/// ```
+/// // Mapping from [-9, 5] to [0, 1]
+/// // [================> ] (4 / 5)
+/// let mut progressbar = progressing::MappingBar::new(-9..=5);
+/// progressbar.set_bar_len(20);
+/// progressbar.set(4).reprintln()
+/// ```
 #[derive(Debug)]
 pub struct MappingBar<N> {
     bar: ClampingBar,
