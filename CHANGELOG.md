@@ -153,7 +153,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [semver]: https://semver.org/
 
 [Unreleased]: https://github.com/dominicparga/progressing/compare/v2.1.0...HEAD
-[v2.0.3]: https://github.com/dominicparga/progressing/compare/v2.0.2...v2.1.0
+[v2.1.0]: https://github.com/dominicparga/progressing/compare/v2.0.2...v2.1.0
 [v2.0.2]: https://github.com/dominicparga/progressing/compare/v2.0.1...v2.0.2
 [v2.0.1]: https://github.com/dominicparga/progressing/compare/v2.0.0...v2.0.1
 [v2.0.0]: https://github.com/dominicparga/progressing/compare/v1.0.3...v2.0.0

@@ -4,7 +4,7 @@ name = "progressing"
 # will lead to publishing it automatically to crates.io.
 # Hence do not forget updating Unreleased in CHANGELOG.md.
 version = "2.1.0" # !!!
-description = "A lightweight, counting progress-bar for Rust"
+description = "A lightweight, text-based, counting progress-bar for Rust"
 edition = "2018"
 
 authors = [
