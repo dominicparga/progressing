@@ -20,7 +20,7 @@ pub fn inner_k<N>(mapping_bar: &MappingBar<N>) -> &N {
 //------------------------------------------------------------------------------------------------//
 // bar mapping [min, max] to [0, 1]
 
-/// ## Mini-Example
+/// A progressbar mapping values from `[a, b]` (e.g. `[-9, 5]`) to `[0, 1]`.
 ///
 /// ```
 /// use progressing::Bar;

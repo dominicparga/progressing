@@ -15,7 +15,10 @@ use std::io;
 
 //------------------------------------------------------------------------------------------------//
 
-/// ## Mini-Examples
+/// A trait describing basic functionality for simple text-based progress-bars.
+///
+///
+/// # Mini-Examples
 ///
 /// ```
 /// use progressing::Bar;

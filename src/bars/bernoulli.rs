@@ -10,6 +10,7 @@ use std::ops;
 //------------------------------------------------------------------------------------------------//
 // bar counting success and failures
 
+/// Just a simple struct capsuling access to successes and attempts.
 #[derive(Copy, Clone)]
 pub struct BernoulliProgress {
     pub successes: u32,
@@ -72,7 +73,9 @@ impl ops::AddAssign for BernoulliProgress {
 
 //------------------------------------------------------------------------------------------------//
 
-/// ## Mini-Example
+/// A progressbar counting successes (e.g. `42 out of 60`) and respective attempts (e.g. `130`).
+///
+/// # Mini-Example
 ///
 /// ```
 /// use progressing::Bar;

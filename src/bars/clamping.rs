@@ -8,10 +8,10 @@ use std::fmt;
 //------------------------------------------------------------------------------------------------//
 // default bar clamping to [0; 1]
 
-/// Only optimized for single-length-strings, but strings are more handy than chars.
+/// A progressbar clamping values to `[0, 1]`.
 ///
 ///
-/// ## Mini-Example
+/// # Mini-Example
 ///
 /// ```
 /// use progressing::Bar;
@@ -25,6 +25,8 @@ use std::fmt;
 ///     progressbar.set(0.3).reprintln()
 /// }
 /// ```
+///
+/// It is only optimized for single-length-strings, but strings are more handy than chars and hence used as implementation.
 #[derive(Debug)]
 pub struct ClampingBar {
     bar_len: usize,
