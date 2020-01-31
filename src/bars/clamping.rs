@@ -10,14 +10,20 @@ use std::fmt;
 
 /// Only optimized for single-length-strings, but strings are more handy than chars.
 ///
-/// Examples
+///
+/// ## Mini-Example
 ///
 /// ```
-/// // Printing value 0.3 clamped to [0, 1]
-/// // [=====>            ]
-/// let mut progressbar = progressing::ClampingBar::new();
-/// progressbar.set_bar_len(20);
-/// progressbar.set(0.3).reprintln()
+/// use progressing::Bar;
+///
+/// /// Printing value 0.3 clamped to [0, 1]
+/// /// [=====>            ]
+/// fn main() -> Result<(), String> {
+///     println!("Printing value 0.3 clamped to [0, 1]");
+///     let mut progressbar = progressing::ClampingBar::new();
+///     progressbar.set_bar_len(20);
+///     progressbar.set(0.3).reprintln()
+/// }
 /// ```
 #[derive(Debug)]
 pub struct ClampingBar {
