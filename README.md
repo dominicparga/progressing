@@ -1,13 +1,15 @@
 # progressing
 
-[![Tag][github/tags/badge]][github/tags]
-[![Crates.io][crates.io/progressing/badge]][crates.io/progressing]
-[![Docs][docs.rs/progressing/badge]][docs.rs/progressing]
+[![Build Status master][github/self/actions/badge]][github/self/actions]
 
-[![Changelog][github/blob/changelog/badge]][github/blob/changelog]
-[![Last commit][github/last-commit/badge]][github/last-commit]
+[![Tag][github/self/tags/badge]][github/self/tags]
+[![Crates.io][crates.io/self/badge]][crates.io/self]
+[![Docs][docs.rs/self/badge]][docs.rs/self]
 
-[![License][github/license/badge]][github/license]
+[![Changelog][github/self/blob/changelog/badge]][github/self/blob/changelog]
+[![Last commit][github/self/last-commit/badge]][github/self/last-commit]
+
+[![License][github/self/license/badge]][github/self/license]
 
 
 ## Look and feel
@@ -38,16 +40,18 @@ progressbar.set((42, 130)).reprintln()
 Please refer to the [examples][github/tree/examples].
 
 
-[crates.io/progressing]: https://crates.io/crates/progressing
-[crates.io/progressing/badge]: https://img.shields.io/crates/v/progressing?style=for-the-badge
-[docs.rs/progressing]: https://docs.rs/progressing/
-[docs.rs/progressing/badge]: https://img.shields.io/crates/v/progressing?color=informational&label=docs&style=for-the-badge
-[github/blob/changelog]: https://github.com/dominicparga/progressing/blob/master/CHANGELOG.md
-[github/blob/changelog/badge]: https://img.shields.io/badge/CHANGELOG-master-blueviolet?style=for-the-badge
-[github/last-commit]: https://github.com/dominicparga/progressing/commits
-[github/last-commit/badge]: https://img.shields.io/github/last-commit/dominicparga/progressing?style=for-the-badge
-[github/license]: https://github.com/dominicparga/progressing/blob/master/LICENSE
-[github/license/badge]: https://img.shields.io/github/license/dominicparga/progressing?style=for-the-badge
-[github/tags]: https://github.com/dominicparga/progressing/tags
-[github/tags/badge]: https://img.shields.io/github/v/tag/dominicparga/progressing?sort=semver&style=for-the-badge
-[github/tree/examples]: https://github.com/dominicparga/progressing/tree/master/examples
+[crates.io/self]: https://crates.io/crates/progressing
+[crates.io/self/badge]: https://img.shields.io/crates/v/progressing?style=for-the-badge
+[docs.rs/self]: https://docs.rs/progressing/
+[docs.rs/self/badge]: https://img.shields.io/crates/v/progressing?color=informational&label=docs&style=for-the-badge
+[github/self/actions]: https://github.com/dominicparga/progressing/actions
+[github/self/actions/badge]: https://img.shields.io/github/workflow/status/dominicparga/progressing/Rust?label=master-build&style=for-the-badge
+[github/self/blob/changelog]: https://github.com/dominicparga/progressing/blob/master/CHANGELOG.md
+[github/self/blob/changelog/badge]: https://img.shields.io/badge/CHANGELOG-master-blueviolet?style=for-the-badge
+[github/self/last-commit]: https://github.com/dominicparga/progressing/commits
+[github/self/last-commit/badge]: https://img.shields.io/github/last-commit/dominicparga/progressing?style=for-the-badge
+[github/self/license]: https://github.com/dominicparga/progressing/blob/master/LICENSE
+[github/self/license/badge]: https://img.shields.io/github/license/dominicparga/progressing?style=for-the-badge
+[github/self/tags]: https://github.com/dominicparga/progressing/tags
+[github/self/tags/badge]: https://img.shields.io/github/v/tag/dominicparga/progressing?sort=semver&style=for-the-badge
+[github/self/tree/examples]: https://github.com/dominicparga/progressing/tree/master/examples
