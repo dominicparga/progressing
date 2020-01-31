@@ -224,6 +224,70 @@ where
 }
 
 //------------------------------------------------------------------------------------------------//
+// impl for usize
+
+impl Default for MappingBar<usize> {
+    fn default() -> Self {
+        MappingBar {
+            bar: ClampingBar::default(),
+            range: 0..=100,
+            k: 0,
+        }
+    }
+}
+
+impl MappingBar<usize> {
+    fn start(&self) -> usize {
+        *(self.range.start())
+    }
+
+    fn end(&self) -> usize {
+        *(self.range.end())
+    }
+}
+
+impl Bar for MappingBar<usize> {
+    type Progress = usize;
+
+    fn bar_len(&self) -> usize {
+        self.bar.bar_len()
+    }
+
+    fn set_bar_len(&mut self, new_bar_len: usize) {
+        self.bar.set_bar_len(new_bar_len)
+    }
+
+    fn progress(&self) -> usize {
+        self.k
+    }
+
+    fn set<P: Into<usize>>(&mut self, new_progress: P) -> &mut Self {
+        let new_progress = new_progress.into();
+        self.k = new_progress;
+
+        // calculate new progress
+        let k_min = self.start() as f32;
+        let k_max = self.end() as f32;
+        let k = new_progress as f32;
+        self.bar.set((k - k_min) / (k_max - k_min));
+
+        // return self
+        self
+    }
+
+    fn add<P: Into<usize>>(&mut self, delta: P) -> &mut Self {
+        self.set(self.k + delta.into())
+    }
+}
+
+impl fmt::Display for MappingBar<usize> {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{} ({} / {})", self.bar, self.k, self.end())
+    }
+}
+
+//------------------------------------------------------------------------------------------------//
+// impl for u32
 
 impl Default for MappingBar<u32> {
     fn default() -> Self {
@@ -286,6 +350,7 @@ impl fmt::Display for MappingBar<u32> {
 }
 
 //------------------------------------------------------------------------------------------------//
+// impl for i32
 
 impl Default for MappingBar<i32> {
     fn default() -> Self {
