@@ -111,6 +111,14 @@ impl BernoulliBar {
             ..Default::default()
         }
     }
+
+    pub fn start(&self) -> u32 {
+        self.bar.start()
+    }
+
+    pub fn end(&self) -> u32 {
+        self.bar.end()
+    }
 }
 
 impl Bar for BernoulliBar {
