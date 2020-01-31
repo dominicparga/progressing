@@ -19,7 +19,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ### Added
 
-\-
+- `GitHub`-workflow auto-testing and -publishing to `crates.io` if `Cargo.toml` changes version and tests are successful.
+- Support for `usize`
 
 
 ### Changed
@@ -31,7 +32,6 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
-- Support for `GitHub-workflow` is missing, which can, besides testing, automatically deploy to `crates.io` and tag if `Cargo.toml` changes version.
 
 
 ### Removed
@@ -121,11 +121,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
   - One is counting and mapping `i32` or `u32` from `[a, b]` to `[0, 1]`.
   - One is counting successes and attempts for a given goal `n`.
 - Change a bar's progress via methods `set` and `add` using
-  - `BernoulliProgress` (which is `pub`)
-
-
-### Deprecated
-
+  - `BernoulliProgress` (which is `pub`)- Support for `GitHub-workflow` is missing, which can, besides testing, automatically deploy to `crates.io` and tag if `Cargo.toml` changes version.
 - `CHANGELOG.md` is missing
 - `BernoulliProgress` has no constructing method like `new()` and no default-implementation.
 - Detailled documentation is missing, though examples are good.
