@@ -23,8 +23,8 @@ jobs:
     - name: Run tests
       run: |
         cargo test --verbose
-        cargo run --example astar
-        cargo run --example parser
+        cargo run --example simple
+        cargo run --example loops
     - name: Build docs
       run: cargo doc
     - name: Deploy and tag
@@ -48,8 +48,8 @@ jobs:
     - name: Run tests
       run: |
         cargo test --verbose
-        cargo run --example astar
-        cargo run --example parser
+        cargo run --example simple
+        cargo run --example loops
   nightly:
     runs-on: ubuntu-latest
     steps:
@@ -66,6 +66,6 @@ jobs:
     - name: Run tests
       run: |
         cargo test --verbose
-        cargo run --example astar
-        cargo run --example parser
+        cargo run --example simple
+        cargo run --example loops
       continue-on-error: true
