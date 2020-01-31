@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
+1. [v2.0.3](#v2_0_3)
 1. [v2.0.2](#v2_0_2)
 1. [v2.0.1](#v2_0_1)
 1. [v2.0.0](#v2_0_0)
@@ -19,14 +20,12 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ### Added
 
-- `GitHub`-workflow auto-testing and -publishing to `crates.io` if `Cargo.toml` changes version and tests are successful.
-- Add a little documentation to `struct`s with little examples from `simple`-example.
-- Add support for `usize` for `MappingBar`.
+\-
 
 
 ### Changed
 
-- Move `structs` in own `modules`.
+\-
 
 
 ### Deprecated
@@ -48,6 +47,27 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ### Security
 
 \-
+
+
+
+## [v2.0.3] <a name="v2_0_3"></a>
+
+### Added
+
+- `GitHub`-workflow auto-testing and -publishing to `crates.io` if `Cargo.toml` changes version and tests are successful.
+- Add a little documentation to `struct`s with little examples from `simple`-example.
+- Add support for `usize` for `MappingBar`.
+
+
+### Changed
+
+- Move `structs` in own `modules`.
+
+
+### Deprecated
+
+- Detailled documentation is missing, though examples are good.
+- Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
 
 
 ## [v2.0.2] <a name="v2_0_2"></a>
@@ -131,7 +151,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/
 [semver]: https://semver.org/
 
-[Unreleased]: https://github.com/dominicparga/progressing/compare/v2.0.2...HEAD
+[Unreleased]: https://github.com/dominicparga/progressing/compare/v2.0.3...HEAD
+[v2.0.3]: https://github.com/dominicparga/progressing/compare/v2.0.2...v2.0.3
 [v2.0.2]: https://github.com/dominicparga/progressing/compare/v2.0.1...v2.0.2
 [v2.0.1]: https://github.com/dominicparga/progressing/compare/v2.0.0...v2.0.1
 [v2.0.0]: https://github.com/dominicparga/progressing/compare/v1.0.3...v2.0.0
