@@ -1,8 +1,8 @@
 //------------------------------------------------------------------------------------------------//
 // other modules
 
-use super::ClampingBar;
 use super::Bar;
+use super::ClampingBar;
 use std::fmt;
 use std::ops;
 
