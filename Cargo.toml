@@ -1,3 +1,5 @@
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
 [package]
 name = "progressing"
 # Changing this version in master and pushing to GitHub
@@ -15,8 +17,6 @@ readme = "README.md"
 keywords = ["progressbar", "progress", "pbr", "logging", "counting"]
 categories = ["command-line-interface"]
 license-file = "LICENSE"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 
 [dependencies]
