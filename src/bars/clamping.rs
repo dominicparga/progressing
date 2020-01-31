@@ -17,7 +17,7 @@ use std::fmt;
 /// use progressing::Bar;
 ///
 /// /// Printing value 0.3 clamped to [0, 1]
-/// /// [=====>            ]
+/// /// [=====>------------]
 /// fn main() -> Result<(), String> {
 ///     println!("Printing value 0.3 clamped to [0, 1]");
 ///     let mut progressbar = progressing::ClampingBar::new();
@@ -45,7 +45,7 @@ impl Default for ClampingBar {
             left_bracket: String::from("["),
             right_bracket: String::from("]"),
             line: String::from("="),
-            empty_line: String::from(" "),
+            empty_line: String::from("-"),
             hat: String::from(">"),
             progress: 0.0,
         }

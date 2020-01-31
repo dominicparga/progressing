@@ -2,7 +2,7 @@ use progressing;
 use progressing::Bar;
 
 /// Printing value 0.3 clamped to [0, 1]
-/// [=====>            ]
+/// [=====>------------]
 fn clamped() -> Result<(), String> {
     println!("Printing value 0.3 clamped to [0, 1]");
     let mut progressbar = progressing::ClampingBar::new();
@@ -11,7 +11,7 @@ fn clamped() -> Result<(), String> {
 }
 
 /// Mapping from [-9, 5] to [0, 1]
-/// [================> ] (4 / 5)
+/// [================>-] (4 / 5)
 fn mapped() -> Result<(), String> {
     println!("Mapping from [-9, 5] to [0, 1]");
     let mut progressbar = progressing::MappingBar::new(-9..=5);
@@ -20,7 +20,7 @@ fn mapped() -> Result<(), String> {
 }
 
 /// Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
-/// [============>     ] (42 / 60 # 130)
+/// [============>-----] (42 / 60 # 130)
 fn bernoulli() -> Result<(), String> {
     println!("Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)");
     let mut progressbar = progressing::BernoulliBar::from_goal(60);

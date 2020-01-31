@@ -7,9 +7,9 @@ pub use bernoulli::BernoulliProgress;
 mod clamping;
 pub use clamping::ClampingBar;
 mod mapping;
-pub use mapping::MappingBar;
 use io::stdout;
 use io::Write;
+pub use mapping::MappingBar;
 use std::fmt;
 use std::io;
 
@@ -21,7 +21,7 @@ use std::io;
 /// use progressing::Bar;
 ///
 /// /// Printing value 0.3 clamped to [0, 1]
-/// /// [=====>            ]
+/// /// [=====>------------]
 /// fn clamped() -> Result<(), String> {
 ///     println!("Printing value 0.3 clamped to [0, 1]");
 ///     let mut progressbar = progressing::ClampingBar::new();
@@ -30,7 +30,7 @@ use std::io;
 /// }
 ///
 /// /// Mapping from [-9, 5] to [0, 1]
-/// /// [================> ] (4 / 5)
+/// /// [================>-] (4 / 5)
 /// fn mapped() -> Result<(), String> {
 ///     println!("Mapping from [-9, 5] to [0, 1]");
 ///     let mut progressbar = progressing::MappingBar::new(-9..=5);
@@ -39,7 +39,7 @@ use std::io;
 /// }
 ///
 /// /// Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
-/// /// [============>     ] (42 / 60 # 130)
+/// /// [============>-----] (42 / 60 # 130)
 /// fn bernoulli() -> Result<(), String> {
 ///     println!("Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)");
 ///     let mut progressbar = progressing::BernoulliBar::from_goal(60);
@@ -62,7 +62,7 @@ pub trait Bar: fmt::Display {
 
     /// Do not shorten the length before reprinting since the line will be overwritten, not cleared.
     ///
-    /// `[========> ]` becomes `[====>]==> ]` instead of `[====>]     `.
+    /// `[========>-]` becomes `[====>]==>-]` instead of `[====>]     `.
     fn set_bar_len(&mut self, new_bar_len: usize);
 
     /// Returns the printable progressbar.

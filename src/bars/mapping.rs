@@ -26,7 +26,7 @@ pub fn inner_k<N>(mapping_bar: &MappingBar<N>) -> &N {
 /// use progressing::Bar;
 ///
 /// /// Mapping from [-9, 5] to [0, 1]
-/// /// [================> ] (4 / 5)
+/// /// [================>-] (4 / 5)
 /// fn main() -> Result<(), String> {
 ///     println!("Mapping from [-9, 5] to [0, 1]");
 ///     let mut progressbar = progressing::MappingBar::new(-9..=5);
