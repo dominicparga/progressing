@@ -8,16 +8,16 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
-1. [v2.2.0](#v2_2_0)
-1. [v2.1.0](#v2_1_0)
-1. [v2.0.2](#v2_0_2)
-1. [v2.0.1](#v2_0_1)
-1. [v2.0.0](#v2_0_0)
-1. [v1.0.3](#v1_0_3)
-1. [v1.0.2](#v1_0_2)
+1. [v2.2.0](#v2.2.0)
+1. [v2.1.0](#v2.1.0)
+1. [v2.0.2](#v2.0.2)
+1. [v2.0.1](#v2.0.1)
+1. [v2.0.0](#v2.0.0)
+1. [v1.0.3](#v1.0.3)
+1. [v1.0.2](#v1.0.2)
 
 
-## [Unreleased] <a name="unreleased"></a>
+## [Unreleased][github/self/unreleased] <a name="unreleased"></a>
 
 ### Added
 
@@ -50,7 +50,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 \-
 
 
-## [v2.2.0] <a name="v2_2_0"></a>
+## [v2.2.0][github/self/v2.2.0] <a name="v2.2.0"></a>
 
 ### Added
 
@@ -63,7 +63,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>---]` -> `[====o---]`)
 
 
-## [v2.1.0] <a name="v2_1_0"></a>
+## [v2.1.0][github/self/v2.1.0] <a name="v2.1.0"></a>
 
 ### Added
 
@@ -84,7 +84,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
 
 
-## [v2.0.2] <a name="v2_0_2"></a>
+## [v2.0.2][github/self/v2.0.2] <a name="v2.0.2"></a>
 
 ### Fixed
 
@@ -96,7 +96,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
 
 
-## [v2.0.1] <a name="v2_0_1"></a>
+## [v2.0.1][github/self/v2.0.1] <a name="v2.0.1"></a>
 
 ### Changed
 
@@ -109,7 +109,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
 
 
-## [v2.0.0] <a name="v2_0_0"></a>
+## [v2.0.0][github/self/v2.0.0] <a name="v2.0.0"></a>
 
 ### Added
 
@@ -132,7 +132,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Changelog has been forgotten to adapt..
 
 
-## [v1.0.3] <a name="v1_0_3"></a>
+## [v1.0.3][github/self/v1.0.3] <a name="v1.0.3"></a>
 
 ### Added
 
@@ -145,7 +145,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Detailled documentation is missing, though examples are good.
 
 
-## [v1.0.2] <a name="v1_0_2"></a>
+## [v1.0.2][github/self/v1.0.2] <a name="v1.0.2"></a>
 
 ### Added
 
@@ -165,11 +165,11 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/
 [semver]: https://semver.org/
 
-[Unreleased]: https://github.com/dominicparga/progressing/compare/v2.2.0...HEAD
-[v2.2.0]: https://github.com/dominicparga/progressing/compare/v2.1.0...v2.2.0
-[v2.1.0]: https://github.com/dominicparga/progressing/compare/v2.0.2...v2.1.0
-[v2.0.2]: https://github.com/dominicparga/progressing/compare/v2.0.1...v2.0.2
-[v2.0.1]: https://github.com/dominicparga/progressing/compare/v2.0.0...v2.0.1
-[v2.0.0]: https://github.com/dominicparga/progressing/compare/v1.0.3...v2.0.0
-[v1.0.3]: https://github.com/dominicparga/progressing/compare/v1.0.2...v1.0.3
-[v1.0.2]: https://github.com/dominicparga/progressing/releases/tag/v1.0.2
+[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v2.2.0...HEAD
+[github/self/v2.2.0]: https://github.com/dominicparga/progressing/compare/v2.1.0...v2.2.0
+[github/self/v2.1.0]: https://github.com/dominicparga/progressing/compare/v2.0.2...v2.1.0
+[github/self/v2.0.2]: https://github.com/dominicparga/progressing/compare/v2.0.1...v2.0.2
+[github/self/v2.0.1]: https://github.com/dominicparga/progressing/compare/v2.0.0...v2.0.1
+[github/self/v2.0.0]: https://github.com/dominicparga/progressing/compare/v1.0.3...v2.0.0
+[github/self/v1.0.3]: https://github.com/dominicparga/progressing/compare/v1.0.2...v1.0.3
+[github/self/v1.0.2]: https://github.com/dominicparga/progressing/releases/tag/v1.0.2
