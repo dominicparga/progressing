@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
+1. [v2.2.1](#v2.2.1)
 1. [v2.2.0](#v2.2.0)
 1. [v2.1.0](#v2.1.0)
 1. [v2.0.2](#v2.0.2)
@@ -50,6 +51,19 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 \-
 
 
+## [v2.2.1][github/self/v2.1.1] <a name="v2.1.1"></a>
+
+### Deprecated
+
+- Detailled documentation is missing, though examples are good.
+- Bar-styles to easily and safely configure bar-styles (e.g. `[====>---]` -> `[====o---]`)
+
+
+### Fixed
+
+- Fix URL in README.
+
+
 ## [v2.2.0][github/self/v2.2.0] <a name="v2.2.0"></a>
 
 ### Added
@@ -61,6 +75,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>---]` -> `[====o---]`)
+- README has wrong URL.
 
 
 ## [v2.1.0][github/self/v2.1.0] <a name="v2.1.0"></a>
@@ -165,7 +180,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/
 [semver]: https://semver.org/
 
-[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v2.2.0...HEAD
+[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v2.2.1...HEAD
+[github/self/v2.2.1]: https://github.com/dominicparga/progressing/compare/v2.2.0...v2.2.1
 [github/self/v2.2.0]: https://github.com/dominicparga/progressing/compare/v2.1.0...v2.2.0
 [github/self/v2.1.0]: https://github.com/dominicparga/progressing/compare/v2.0.2...v2.1.0
 [github/self/v2.0.2]: https://github.com/dominicparga/progressing/compare/v2.0.1...v2.0.2

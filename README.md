@@ -37,7 +37,7 @@ progressbar.set((42, 130)).reprintln()
 
 ## Setup and usage
 
-Please refer to the [examples][github/tree/examples].
+Please refer to the [examples][github/self/tree/examples].
 
 
 [crates.io/self]: https://crates.io/crates/progressing
