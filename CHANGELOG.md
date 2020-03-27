@@ -57,6 +57,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ### Changed <a name="v2.2.2/changed></a>
 
 - Change style of __LICENSE__ and write it with `markdown`.
+- Replace branch `master` by `nightly`.
 
 
 ### Deprecated <a name="v2.2.2/deprecated></a>
