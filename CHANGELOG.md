@@ -52,15 +52,15 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 \-
 
 
-## [v2.2.2][github/self/v2.2.2] <a name="v2.2.2></a>
+## [v2.2.2][github/self/v2.2.2] <a name="v2.2.2"></a>
 
-### Changed <a name="v2.2.2/changed></a>
+### Changed <a name="v2.2.2/changed"></a>
 
 - Change style of __LICENSE__ and write it with `markdown`.
 - Replace branch `master` by `nightly`.
 
 
-### Deprecated <a name="v2.2.2/deprecated></a>
+### Deprecated <a name="v2.2.2/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>---]` -> `[====o---]`)
@@ -68,25 +68,25 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ## [v2.2.1][github/self/v2.2.1] <a name="v2.2.1"></a>
 
-### Deprecated <a name="v2.2.1/deprecated></a>
+### Deprecated <a name="v2.2.1/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>---]` -> `[====o---]`)
 
 
-### Fixed <a name="v2.2.1/fixed></a>
+### Fixed <a name="v2.2.1/fixed"></a>
 
 - Fix URL in README.
 
 
 ## [v2.2.0][github/self/v2.2.0] <a name="v2.2.0"></a>
 
-### Added <a name="v2.2.0/added></a>
+### Added <a name="v2.2.0/added"></a>
 
 - Add `start(...)` and `end(...)` for `BernoulliBar` according to `MappingBar`.
 
 
-### Deprecated <a name="v2.2.0/deprecated></a>
+### Deprecated <a name="v2.2.0/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>---]` -> `[====o---]`)
@@ -95,20 +95,20 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ## [v2.1.0][github/self/v2.1.0] <a name="v2.1.0"></a>
 
-### Added <a name="v2.1.0/added></a>
+### Added <a name="v2.1.0/added"></a>
 
 - `GitHub`-workflow auto-testing and -publishing to `crates.io` if `Cargo.toml` changes version and tests are successful.
 - Add a little documentation to `struct`s with little examples from `simple`-example.
 - Add support for `usize` for `MappingBar`.
 
 
-### Changed <a name="v2.1.0/changed></a>
+### Changed <a name="v2.1.0/changed"></a>
 
 - Move `structs` in own `modules`.
 - Change bar-style slightly: `[====>   ]` -> `[====>---]`
 
 
-### Deprecated <a name="v2.1.0/deprecated></a>
+### Deprecated <a name="v2.1.0/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
@@ -116,11 +116,11 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ## [v2.0.2][github/self/v2.0.2] <a name="v2.0.2"></a>
 
-### Fixed <a name="v2.0.2/fixed></a>
+### Fixed <a name="v2.0.2/fixed"></a>
 
 - `README.md` has had invalid code, which as been edited as in `examples`.
 
-### Deprecated <a name="v2.0.2/deprecated></a>
+### Deprecated <a name="v2.0.2/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
 - Bar-styles to easily and safely configure bar-styles (e.g. `[====>   ]` -> `[----o   ]`)
