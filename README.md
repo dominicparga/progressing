@@ -1,6 +1,6 @@
 # progressing
 
-[![Build Status master][github/self/actions/badge]][github/self/actions]
+[![Build Status nightly][github/self/actions/badge]][github/self/actions]
 
 [![Tag][github/self/tags/badge]][github/self/tags]
 [![Crates.io][crates.io/self/badge]][crates.io/self]
@@ -45,13 +45,13 @@ Please refer to the [examples][github/self/tree/examples].
 [docs.rs/self]: https://docs.rs/progressing/
 [docs.rs/self/badge]: https://img.shields.io/crates/v/progressing?color=informational&label=docs&style=for-the-badge
 [github/self/actions]: https://github.com/dominicparga/progressing/actions
-[github/self/actions/badge]: https://img.shields.io/github/workflow/status/dominicparga/progressing/Rust?label=master-build&style=for-the-badge
-[github/self/blob/changelog]: https://github.com/dominicparga/progressing/blob/master/CHANGELOG.md
-[github/self/blob/changelog/badge]: https://img.shields.io/badge/CHANGELOG-master-blueviolet?style=for-the-badge
+[github/self/actions/badge]: https://img.shields.io/github/workflow/status/dominicparga/progressing/Rust?label=nightly-build&style=for-the-badge
+[github/self/blob/changelog]: https://github.com/dominicparga/progressing/blob/nightly/CHANGELOG.md
+[github/self/blob/changelog/badge]: https://img.shields.io/badge/CHANGELOG-nightly-blueviolet?style=for-the-badge
 [github/self/last-commit]: https://github.com/dominicparga/progressing/commits
 [github/self/last-commit/badge]: https://img.shields.io/github/last-commit/dominicparga/progressing?style=for-the-badge
-[github/self/license]: https://github.com/dominicparga/progressing/blob/master/LICENSE
+[github/self/license]: https://github.com/dominicparga/progressing/blob/nightly/LICENSE.md
 [github/self/license/badge]: https://img.shields.io/github/license/dominicparga/progressing?style=for-the-badge
 [github/self/tags]: https://github.com/dominicparga/progressing/tags
 [github/self/tags/badge]: https://img.shields.io/github/v/tag/dominicparga/progressing?sort=semver&style=for-the-badge
-[github/self/tree/examples]: https://github.com/dominicparga/progressing/tree/master/examples
+[github/self/tree/examples]: https://github.com/dominicparga/progressing/tree/nightly/examples
