@@ -19,10 +19,20 @@ categories = ["command-line-interface"]
 license-file = "LICENSE"
 
 
+[features]
+main = ["env_logger", "clap"]
+
+
+[[bin]]
+name = 'main' # bin/main.rs
+required-features = ["main"]
+
+
 [dependencies]
-env_logger = "0.6" # logging for external use, e.g. main.rs and examples
 log = "0.4" # logging for internal use, e.g. lib.rs
-clap = "2" # cmdline-parsing
+
+env_logger = { version = "0.6", optional = true } # logging for external use, e.g. main.rs and examples
+clap = { version = "2", optional = true } # cmdline-parsing
 
 
 [[example]]

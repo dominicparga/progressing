@@ -50,7 +50,7 @@ Please refer to the [examples][github/self/tree/examples].
 [github/self/blob/changelog/badge]: https://img.shields.io/badge/CHANGELOG-master-blueviolet?style=for-the-badge
 [github/self/last-commit]: https://github.com/dominicparga/progressing/commits
 [github/self/last-commit/badge]: https://img.shields.io/github/last-commit/dominicparga/progressing?style=for-the-badge
-[github/self/license]: https://github.com/dominicparga/progressing/blob/master/LICENSE
+[github/self/license]: https://github.com/dominicparga/progressing/blob/master/LICENSE.md
 [github/self/license/badge]: https://img.shields.io/github/license/dominicparga/progressing?style=for-the-badge
 [github/self/tags]: https://github.com/dominicparga/progressing/tags
 [github/self/tags/badge]: https://img.shields.io/github/v/tag/dominicparga/progressing?sort=semver&style=for-the-badge
