@@ -15,8 +15,9 @@ use std::{cmp::min, fmt};
 /// fn main() {
 ///     println!("Printing value 0.3 clamped to [0, 1]");
 ///     let mut progress_bar = progressing::ClampingBar::new();
-///     progress_bar.set_bar_len(20);
-///     println!("{}", progress_bar.set(0.3));
+///     progress_bar.set_len(20);
+///     progress_bar.set(0.3);
+///     println!("{}", progress_bar);
 /// }
 /// ```
 ///
@@ -25,7 +26,7 @@ use std::{cmp::min, fmt};
 pub struct ClampingBar {
     bar_len: usize,
     style: String,
-    progress: f32,
+    progress: f64,
 }
 
 impl Default for ClampingBar {
@@ -65,7 +66,7 @@ impl ClampingBar {
     }
 
     fn inner_bar_len(&self) -> usize {
-        self.bar_len() - self.brackets_len()
+        self.len() - self.brackets_len()
     }
 
     fn brackets_len(&self) -> usize {
@@ -94,23 +95,25 @@ impl ClampingBar {
 }
 
 impl Bar for ClampingBar {
-    type Progress = f32;
+    type Progress = f64;
 
-    fn bar_len(&self) -> usize {
+    fn len(&self) -> usize {
         self.bar_len
     }
 
     /// panics if length is `< 3`
-    fn set_bar_len(&mut self, new_bar_len: usize) {
-        assert!(new_bar_len > self.brackets_len());
+    fn set_len(&mut self, new_bar_len: usize) {
         self.bar_len = new_bar_len;
     }
 
-    fn progress(&self) -> f32 {
+    fn progress(&self) -> f64 {
         self.progress
     }
 
-    fn set<P: Into<f32>>(&mut self, new_progress: P) -> &mut Self {
+    fn set<P>(&mut self, new_progress: P)
+    where
+        P: Into<f64>,
+    {
         let mut new_progress = new_progress.into();
 
         if new_progress < 0.0 {
@@ -120,11 +123,6 @@ impl Bar for ClampingBar {
             new_progress = 1.0;
         }
         self.progress = new_progress;
-        self
-    }
-
-    fn add<P: Into<f32>>(&mut self, delta: P) -> &mut Self {
-        self.set(self.progress + delta.into())
     }
 }
 
@@ -134,7 +132,7 @@ impl fmt::Display for ClampingBar {
         // calc progress
         // -> bar needs to be calculated
         // -> no brackets involved
-        let reached = (self.progress * (self.inner_bar_len() as f32)) as usize;
+        let reached = (self.progress * (self.inner_bar_len() as f64)) as usize;
 
         let line = self.line().repeat(reached);
         // crop hat if end of bar is reached
@@ -143,7 +141,6 @@ impl fmt::Display for ClampingBar {
         let empty_line = self
             .empty_line()
             .repeat(self.inner_bar_len() - reached - hat.len());
-        let bar = format!("{}{}{}", line, hat, empty_line);
-        write!(f, "{}{}{}", self.left_bracket(), bar, self.right_bracket())
+        write!(f, "{}{}{}{}{}{}", self.len(), self.left_bracket(), line, hat, empty_line, self.right_bracket())
     }
 }

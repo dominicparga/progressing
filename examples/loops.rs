@@ -77,7 +77,7 @@ fn bernoulli() {
     // create bar
     let mut progress_bar = progressing::BernoulliBar::from_goal(60);
     // you can reset the lenght of it
-    progress_bar.set_bar_len(60);
+    progress_bar.set_len(60);
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
