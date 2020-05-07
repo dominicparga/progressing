@@ -141,6 +141,15 @@ impl fmt::Display for ClampingBar {
         let empty_line = self
             .empty_line()
             .repeat(self.inner_bar_len() - reached - hat.len());
-        write!(f, "{}{}{}{}{}{}", self.len(), self.left_bracket(), line, hat, empty_line, self.right_bracket())
+        write!(
+            f,
+            "{}{}{}{}{}{}",
+            self.len(),
+            self.left_bracket(),
+            line,
+            hat,
+            empty_line,
+            self.right_bracket()
+        )
     }
 }
