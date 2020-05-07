@@ -26,3 +26,7 @@ path = "examples/simple.rs"
 [[example]]
 name = "loops"
 path = "examples/loops.rs"
+
+
+[dependencies]
+log = "0.4" # logging for internal use, e.g. lib.rs

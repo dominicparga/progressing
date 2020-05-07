@@ -14,6 +14,7 @@ fn main() {
 fn clamped() {
     println!("Printing value 0.3 clamped to [0, 1]");
     let mut progress_bar = progressing::ClampingBar::new();
+    progress_bar.set_style("(->.)");
     progress_bar.set_bar_len(20);
     println!("{}", progress_bar.set(0.3));
 }

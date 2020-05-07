@@ -1,4 +1,5 @@
 use crate::Bar;
+use log::warn;
 use std::{cmp::min, fmt};
 
 /// A progress-bar clamping values to `[0, 1]`.
@@ -23,12 +24,7 @@ use std::{cmp::min, fmt};
 #[derive(Debug)]
 pub struct ClampingBar {
     bar_len: usize,
-    prefix: String,
-    left_bracket: String,
-    right_bracket: String,
-    line: String,
-    empty_line: String,
-    hat: String,
+    style: String,
     progress: f32,
 }
 
@@ -36,12 +32,7 @@ impl Default for ClampingBar {
     fn default() -> Self {
         ClampingBar {
             bar_len: 42,
-            prefix: String::from(""),
-            left_bracket: String::from("["),
-            right_bracket: String::from("]"),
-            line: String::from("="),
-            empty_line: String::from("-"),
-            hat: String::from(">"),
+            style: String::from("[=>-]"),
             progress: 0.0,
         }
     }
@@ -54,12 +45,23 @@ impl ClampingBar {
         }
     }
 
-    pub fn from(bar_len: usize, prefix: String) -> ClampingBar {
+    pub fn from(bar_len: usize) -> ClampingBar {
         ClampingBar {
             bar_len,
-            prefix,
             ..Default::default()
         }
+    }
+
+    pub fn set_style<S>(&mut self, style: S)
+    where
+        S: Into<String>,
+    {
+        let style = style.into();
+
+        if style.len() != 5 {
+            warn!("The bar-style has to consist of 5 characters, e.g. [=>-]");
+        };
+        self.style = style;
     }
 
     fn inner_bar_len(&self) -> usize {
@@ -67,7 +69,27 @@ impl ClampingBar {
     }
 
     fn brackets_len(&self) -> usize {
-        self.left_bracket.len() + self.right_bracket.len()
+        self.left_bracket().len() + self.right_bracket().len()
+    }
+
+    fn left_bracket(&self) -> &str {
+        &self.style[0..1]
+    }
+
+    fn line(&self) -> &str {
+        &self.style[1..2]
+    }
+
+    fn hat(&self) -> &str {
+        &self.style[2..3]
+    }
+
+    fn empty_line(&self) -> &str {
+        &self.style[3..4]
+    }
+
+    fn right_bracket(&self) -> &str {
+        &self.style[4..5]
     }
 }
 
@@ -114,18 +136,14 @@ impl fmt::Display for ClampingBar {
         // -> no brackets involved
         let reached = (self.progress * (self.inner_bar_len() as f32)) as usize;
 
-        let line = self.line.repeat(reached);
+        let line = self.line().repeat(reached);
         // crop hat if end of bar is reached
-        let hat = &self.hat[0..min(self.hat.len(), self.inner_bar_len() - reached)];
+        let hat = &self.hat()[0..min(self.hat().len(), self.inner_bar_len() - reached)];
         // fill up rest with empty line
         let empty_line = self
-            .empty_line
+            .empty_line()
             .repeat(self.inner_bar_len() - reached - hat.len());
         let bar = format!("{}{}{}", line, hat, empty_line);
-        write!(
-            f,
-            "{}{}{}{}",
-            self.prefix, self.left_bracket, bar, self.right_bracket
-        )
+        write!(f, "{}{}{}", self.left_bracket(), bar, self.right_bracket())
     }
 }

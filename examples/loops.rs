@@ -1,7 +1,7 @@
 use progressing::{self, Bar};
 use std::{thread, time};
 
-const SLEEP_MS: u64 = 30;
+const SLEEP_MS: u64 = 20;
 
 fn main() {
     // different examples for different use-cases
