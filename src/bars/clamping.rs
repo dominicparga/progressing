@@ -1,14 +1,7 @@
-//------------------------------------------------------------------------------------------------//
-// other modules
+use crate::Bar;
+use std::{cmp::min, fmt};
 
-use super::Bar;
-use std::cmp::min;
-use std::fmt;
-
-//------------------------------------------------------------------------------------------------//
-// default bar clamping to [0; 1]
-
-/// A progressbar clamping values to `[0, 1]`.
+/// A progress-bar clamping values to `[0, 1]`.
 ///
 ///
 /// # Mini-Example
@@ -18,11 +11,11 @@ use std::fmt;
 ///
 /// /// Printing value 0.3 clamped to [0, 1]
 /// /// [=====>------------]
-/// fn main() -> Result<(), String> {
+/// fn main() {
 ///     println!("Printing value 0.3 clamped to [0, 1]");
-///     let mut progressbar = progressing::ClampingBar::new();
-///     progressbar.set_bar_len(20);
-///     progressbar.set(0.3).reprintln()
+///     let mut progress_bar = progressing::ClampingBar::new();
+///     progress_bar.set_bar_len(20);
+///     println!("{}", progress_bar.set(0.3));
 /// }
 /// ```
 ///

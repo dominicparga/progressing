@@ -20,18 +20,18 @@ pub fn inner_k<N>(mapping_bar: &MappingBar<N>) -> &N {
 //------------------------------------------------------------------------------------------------//
 // bar mapping [min, max] to [0, 1]
 
-/// A progressbar mapping values from `[a, b]` (e.g. `[-9, 5]`) to `[0, 1]`.
+/// A progress-bar mapping values from `[a, b]` (e.g. `[-9, 5]`) to `[0, 1]`.
 ///
 /// ```
 /// use progressing::Bar;
 ///
 /// /// Mapping from [-9, 5] to [0, 1]
 /// /// [================>-] (4 / 5)
-/// fn main() -> Result<(), String> {
+/// fn main() {
 ///     println!("Mapping from [-9, 5] to [0, 1]");
-///     let mut progressbar = progressing::MappingBar::new(-9..=5);
-///     progressbar.set_bar_len(20);
-///     progressbar.set(4).reprintln()
+///     let mut progress_bar = progressing::MappingBar::new(-9..=5);
+///     progress_bar.set_bar_len(20);
+///     println!("{}", progress_bar.set(4));
 /// }
 /// ```
 #[derive(Debug)]

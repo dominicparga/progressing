@@ -17,21 +17,21 @@
 ```rust
 // Printing value 0.3 clamped to [0, 1]
 // [=====>------------]
-let mut progressbar = progressing::ClampingBar::new();
-progressbar.set_bar_len(20);
-progressbar.set(0.3).reprintln()
+let mut progress_bar = progressing::ClampingBar::new();
+progress_bar.set_bar_len(20);
+println!("{}", progress_bar.set(0.3));
 
 // Mapping from [-9, 5] to [0, 1]
 // [================>-] (4 / 5)
-let mut progressbar = progressing::MappingBar::new(-9..=5);
-progressbar.set_bar_len(20);
-progressbar.set(4).reprintln()
+let mut progress_bar = progressing::MappingBar::new(-9..=5);
+progress_bar.set_bar_len(20);
+println!("{}", progress_bar.set(4));
 
 // Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
 // [============>-----] (42 / 60 # 130)
-let mut progressbar = progressing::BernoulliBar::from_goal(60);
-progressbar.set_bar_len(20);
-progressbar.set((42, 130)).reprintln()
+let mut progress_bar = progressing::BernoulliBar::from_goal(60);
+progress_bar.set_bar_len(20);
+println!("{}", progress_bar.set((42, 130)));
 ```
 
 

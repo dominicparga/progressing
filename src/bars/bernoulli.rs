@@ -73,7 +73,7 @@ impl ops::AddAssign for BernoulliProgress {
 
 //------------------------------------------------------------------------------------------------//
 
-/// A progressbar counting successes (e.g. `42 out of 60`) and respective attempts (e.g. `130`).
+/// A progress-bar counting successes (e.g. `42 out of 60`) and respective attempts (e.g. `130`).
 ///
 /// # Mini-Example
 ///
@@ -82,11 +82,11 @@ impl ops::AddAssign for BernoulliProgress {
 ///
 /// /// Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
 /// /// [============>-----] (42 / 60 # 130)
-/// fn main() -> Result<(), String> {
+/// fn main() {
 ///     println!("Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)");
-///     let mut progressbar = progressing::BernoulliBar::from_goal(60);
-///     progressbar.set_bar_len(20);
-///     progressbar.set((42, 130)).reprintln()
+///     let mut progress_bar = progressing::BernoulliBar::from_goal(60);
+///     progress_bar.set_bar_len(20);
+///     println!("{}", progress_bar.set((42, 130)));
 /// }
 /// ```
 #[derive(Debug)]
