@@ -1,19 +1,9 @@
-//------------------------------------------------------------------------------------------------//
-// other modules
-
 mod bernoulli;
-pub use bernoulli::BernoulliBar;
-pub use bernoulli::BernoulliProgress;
+pub use bernoulli::{BernoulliBar, BernoulliProgress};
 mod clamping;
 pub use clamping::ClampingBar;
 mod mapping;
-use io::stdout;
-use io::Write;
 pub use mapping::MappingBar;
-use std::fmt;
-use std::io;
-
-//------------------------------------------------------------------------------------------------//
 
 /// A trait describing basic functionality for simple text-based progress-bars.
 ///
@@ -25,114 +15,156 @@ use std::io;
 ///
 /// /// Printing value 0.3 clamped to [0, 1]
 /// /// [=====>------------]
-/// fn clamped() -> Result<(), String> {
+/// fn clamped() {
 ///     println!("Printing value 0.3 clamped to [0, 1]");
-///     let mut progressbar = progressing::ClampingBar::new();
-///     progressbar.set_bar_len(20);
-///     progressbar.set(0.3).reprintln()
+///     let mut progress_bar = progressing::ClampingBar::new();
+///     progress_bar.set_len(20);
+///     progress_bar.set(0.3);
+///     println!("{}", progress_bar);
 /// }
 ///
 /// /// Mapping from [-9, 5] to [0, 1]
 /// /// [================>-] (4 / 5)
-/// fn mapped() -> Result<(), String> {
+/// fn mapped() {
 ///     println!("Mapping from [-9, 5] to [0, 1]");
-///     let mut progressbar = progressing::MappingBar::new(-9..=5);
-///     progressbar.set_bar_len(20);
-///     progressbar.set(4).reprintln()
+///     let mut progress_bar = progressing::MappingBar::new(-9..=5);
+///     progress_bar.set_len(20);
+///     progress_bar.set(4);
+///     println!("{}", progress_bar);
 /// }
 ///
 /// /// Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
 /// /// [============>-----] (42 / 60 # 130)
-/// fn bernoulli() -> Result<(), String> {
+/// fn bernoulli() {
 ///     println!("Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)");
-///     let mut progressbar = progressing::BernoulliBar::from_goal(60);
-///     progressbar.set_bar_len(20);
-///     progressbar.set((42, 130)).reprintln()
+///     let mut progress_bar = progressing::BernoulliBar::from_goal(60);
+///     progress_bar.set_len(20);
+///     progress_bar.set((42, 130));
+///     println!("{}", progress_bar);
 /// }
 ///
-/// fn main() -> Result<(), String> {
-///     clamped()?;
+/// fn main() {
+///     clamped();
 ///     println!();
-///     mapped()?;
+///     mapped();
 ///     println!();
-///     bernoulli()?;
-///
-///     Ok(())
+///     bernoulli();
 /// }
 /// ```
-pub trait Bar: fmt::Display {
-    fn bar_len(&self) -> usize;
+pub trait Bar {
+    type Progress: Progress;
 
-    /// Do not shorten the length before reprinting since the line will be overwritten, not cleared.
+    fn len(&self) -> usize;
+
+    /// Do not shorten the length before reprinting ("\r") since the line will be overwritten, not cleared.
     ///
     /// `[========>-]` becomes `[====>]==>-]` instead of `[====>]     `.
-    fn set_bar_len(&mut self, new_bar_len: usize);
-
-    /// Returns the printable progressbar.
-    fn display(&self) -> String {
-        format!("{}", self)
-    }
-
-    fn write_to_stdout<S: Into<String>>(&self, msg: S) -> Result<(), String> {
-        let mut output = stdout();
-        match output.write(msg.into().as_bytes()) {
-            Ok(_) => (),
-            Err(e) => return Err(format!("{}", e)),
-        };
-        match output.flush() {
-            Ok(_) => (),
-            Err(e) => return Err(format!("{}", e)),
-        };
-
-        Ok(())
-    }
-
-    /// Prints a progressbar using given progress.
-    /// Does not print a newline-character.
-    /// Use `println(...)` for printing a newline-character.
-    /// Use `reprint(...)` for overwriting the current stdout-line.
-    ///
-    /// Will return error if writing to `stdout` throws an error.
-    fn print(&self) -> Result<(), String> {
-        self.write_to_stdout(format!("{}", self))
-    }
-
-    /// Prints a progressbar using given progress.
-    /// In additon to `print(...)`, this function prints a new line.
-    /// Use `reprintln(...)` for overwriting the current stdout-line.
-    ///
-    /// Will return error if writing to `stdout` throws an error.
-    fn println(&self) -> Result<(), String> {
-        self.write_to_stdout(format!("{}\n", self))
-    }
-
-    /// Prints the current line again with progressbar using given progress.
-    /// Does not print a newline-character.
-    /// Use `reprintln(...)` for reprinting with a newline-character.
-    ///
-    /// Will return error if writing to `stdout` throws an error.
-    fn reprint(&self) -> Result<(), String> {
-        self.write_to_stdout(format!("\r{}", self))
-    }
-
-    /// Prints the current line again with progressbar using given progress.
-    /// In additon to `reprint(...)`, this function prints a new line.
-    /// Use `println(...)` for always printing a newline-character.
-    ///
-    /// Will return error if writing to `stdout` throws an error.
-    fn reprintln(&self) -> Result<(), String> {
-        self.write_to_stdout(format!("\r{}\n", self))
-    }
-
-    //--------------------------------------------------------------------------------------------//
-
-    type Progress;
+    fn set_len(&mut self, new_bar_len: usize);
 
     fn progress(&self) -> Self::Progress;
 
     /// Sets the progress to the given value
-    fn set<P: Into<Self::Progress>>(&mut self, new_progress: P) -> &mut Self;
+    fn set<P>(&mut self, new_progress: P)
+    where
+        P: Into<Self::Progress>;
 
     /// Adds the given progress to the current progress
-    fn add<P: Into<Self::Progress>>(&mut self, delta: P) -> &mut Self;
+    fn add<P>(&mut self, delta: P)
+    where
+        P: Into<Self::Progress>,
+    {
+        self.set(self.progress().add(delta.into()));
+    }
+}
+
+pub trait Progress<Rhs = Self> {
+    fn add(self, summand: Rhs) -> Self;
+
+    fn sub(self, subtrahend: Rhs) -> Self;
+
+    fn div(self, divisor: Rhs) -> f64;
+}
+
+impl Progress for f64 {
+    fn add(self, summand: f64) -> f64 {
+        self + summand
+    }
+
+    fn sub(self, subtrahend: f64) -> f64 {
+        self - subtrahend
+    }
+
+    fn div(self, divisor: f64) -> f64 {
+        self / divisor
+    }
+}
+
+impl Progress for usize {
+    fn add(self, summand: usize) -> usize {
+        self + summand
+    }
+
+    fn sub(self, subtrahend: usize) -> usize {
+        self - subtrahend
+    }
+
+    fn div(self, divisor: usize) -> f64 {
+        (self as f64) / (divisor as f64)
+    }
+}
+
+impl Progress for u64 {
+    fn add(self, summand: u64) -> u64 {
+        self + summand
+    }
+
+    fn sub(self, subtrahend: u64) -> u64 {
+        self - subtrahend
+    }
+
+    fn div(self, divisor: u64) -> f64 {
+        (self as f64) / (divisor as f64)
+    }
+}
+
+impl Progress for u32 {
+    fn add(self, summand: u32) -> u32 {
+        self + summand
+    }
+
+    fn sub(self, subtrahend: u32) -> u32 {
+        self - subtrahend
+    }
+
+    fn div(self, divisor: u32) -> f64 {
+        (self as f64) / (divisor as f64)
+    }
+}
+
+impl Progress for i64 {
+    fn add(self, summand: i64) -> i64 {
+        self + summand
+    }
+
+    fn sub(self, subtrahend: i64) -> i64 {
+        self - subtrahend
+    }
+
+    fn div(self, divisor: i64) -> f64 {
+        (self as f64) / (divisor as f64)
+    }
+}
+
+impl Progress for i32 {
+    fn add(self, summand: i32) -> i32 {
+        self + summand
+    }
+
+    fn sub(self, subtrahend: i32) -> i32 {
+        self - subtrahend
+    }
+
+    fn div(self, divisor: i32) -> f64 {
+        (self as f64) / (divisor as f64)
+    }
 }
