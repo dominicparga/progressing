@@ -19,22 +19,6 @@ categories = ["command-line-interface"]
 license = "Apache-2.0"
 
 
-[features]
-main = ["env_logger", "clap"]
-
-
-[[bin]]
-name = 'main' # bin/main.rs
-required-features = ["main"]
-
-
-[dependencies]
-log = "0.4" # logging for internal use, e.g. lib.rs
-
-env_logger = { version = "0.6", optional = true } # logging for external use, e.g. main.rs and examples
-clap = { version = "2", optional = true } # cmdline-parsing
-
-
 [[example]]
 name = "simple"
 path = "examples/simple.rs"
