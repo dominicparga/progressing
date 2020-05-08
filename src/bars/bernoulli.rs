@@ -44,14 +44,6 @@ impl BernoulliBar {
             attempts: 0,
         }
     }
-
-    pub fn inc_successful(&mut self) {
-        self.add((1, 1));
-    }
-
-    pub fn inc_failed(&mut self) {
-        self.add((0, 1));
-    }
 }
 
 impl Bar for BernoulliBar {
@@ -122,9 +114,8 @@ impl From<usize> for BernoulliProgress {
 
 impl From<bool> for BernoulliProgress {
     fn from(is_successful: bool) -> Self {
-        let successes = if is_successful { 1 } else { 0 };
         BernoulliProgress {
-            successes,
+            successes: if is_successful { 1 } else { 0 },
             attempts: 1,
         }
     }
