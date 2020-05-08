@@ -44,6 +44,14 @@ impl BernoulliBar {
             attempts: 0,
         }
     }
+
+    pub fn inc_successful(&mut self) {
+        self.add((1, 1));
+    }
+
+    pub fn inc_failed(&mut self) {
+        self.add((0, 1));
+    }
 }
 
 impl Bar for BernoulliBar {
