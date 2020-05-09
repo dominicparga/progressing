@@ -1,6 +1,6 @@
 use crate::Bar;
 use log::warn;
-use std::{cmp::min, fmt};
+use std::{cmp::min, fmt::{self, Display}};
 
 /// A progress-bar clamping values to `[0, 1]`.
 ///
@@ -126,7 +126,7 @@ impl Bar for ClampingBar {
     }
 }
 
-impl fmt::Display for ClampingBar {
+impl Display for ClampingBar {
     /// Progress is clamped to `[0, 1]`.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // calc progress
@@ -143,8 +143,7 @@ impl fmt::Display for ClampingBar {
             .repeat(self.inner_bar_len() - reached - hat.len());
         write!(
             f,
-            "{}{}{}{}{}{}",
-            self.len(),
+            "{}{}{}{}{}",
             self.left_bracket(),
             line,
             hat,
