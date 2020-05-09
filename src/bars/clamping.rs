@@ -1,6 +1,9 @@
 use crate::Bar;
 use log::warn;
-use std::{cmp::min, fmt::{self, Display}};
+use std::{
+    cmp::min,
+    fmt::{self, Display},
+};
 
 /// A progress-bar clamping values to `[0, 1]`.
 ///
