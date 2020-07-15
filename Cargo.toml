@@ -30,3 +30,4 @@ path = "examples/loops.rs"
 
 [dependencies]
 log = "0.4" # logging for internal use, e.g. lib.rs
+kissunits = { git = 'https://github.com/dominicparga/kissunits', branch = 'nightly' }
