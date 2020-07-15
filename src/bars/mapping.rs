@@ -1,7 +1,7 @@
 use crate::{Bar, ClampingBar, Progress};
 use std::{
     fmt::{self, Display},
-    ops::RangeInclusive,
+    ops::{Add, RangeInclusive},
 };
 
 pub fn inner_bar<N>(mapping_bar: &MappingBar<N>) -> &ClampingBar {
@@ -71,7 +71,7 @@ where
 
 impl<N> Bar for MappingBar<N>
 where
-    N: Progress + Copy,
+    N: Progress + Copy + Add<Output = N>,
 {
     type Progress = N;
 

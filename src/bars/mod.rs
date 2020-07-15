@@ -5,6 +5,8 @@ pub use clamping::ClampingBar;
 mod mapping;
 pub use mapping::MappingBar;
 
+use std::ops::Add;
+
 /// A trait describing basic functionality for simple text-based progress-bars.
 ///
 ///
@@ -52,7 +54,7 @@ pub use mapping::MappingBar;
 /// }
 /// ```
 pub trait Bar {
-    type Progress: Progress;
+    type Progress: Progress + Add<Output = Self::Progress>;
 
     fn len(&self) -> usize;
 
@@ -73,23 +75,17 @@ pub trait Bar {
     where
         P: Into<Self::Progress>,
     {
-        self.set(self.progress().add(delta.into()));
+        self.set(self.progress() + delta.into());
     }
 }
 
 pub trait Progress<Rhs = Self> {
-    fn add(self, summand: Rhs) -> Self;
-
     fn sub(self, subtrahend: Rhs) -> Self;
 
     fn div(self, divisor: Rhs) -> f64;
 }
 
 impl Progress for f64 {
-    fn add(self, summand: f64) -> f64 {
-        self + summand
-    }
-
     fn sub(self, subtrahend: f64) -> f64 {
         self - subtrahend
     }
@@ -100,10 +96,6 @@ impl Progress for f64 {
 }
 
 impl Progress for usize {
-    fn add(self, summand: usize) -> usize {
-        self + summand
-    }
-
     fn sub(self, subtrahend: usize) -> usize {
         self - subtrahend
     }
@@ -114,10 +106,6 @@ impl Progress for usize {
 }
 
 impl Progress for u64 {
-    fn add(self, summand: u64) -> u64 {
-        self + summand
-    }
-
     fn sub(self, subtrahend: u64) -> u64 {
         self - subtrahend
     }
@@ -128,10 +116,6 @@ impl Progress for u64 {
 }
 
 impl Progress for u32 {
-    fn add(self, summand: u32) -> u32 {
-        self + summand
-    }
-
     fn sub(self, subtrahend: u32) -> u32 {
         self - subtrahend
     }
@@ -142,10 +126,6 @@ impl Progress for u32 {
 }
 
 impl Progress for i64 {
-    fn add(self, summand: i64) -> i64 {
-        self + summand
-    }
-
     fn sub(self, subtrahend: i64) -> i64 {
         self - subtrahend
     }
@@ -156,10 +136,6 @@ impl Progress for i64 {
 }
 
 impl Progress for i32 {
-    fn add(self, summand: i32) -> i32 {
-        self + summand
-    }
-
     fn sub(self, subtrahend: i32) -> i32 {
         self - subtrahend
     }

@@ -139,10 +139,6 @@ impl AddAssign for BernoulliProgress {
 }
 
 impl Progress for BernoulliProgress {
-    fn add(self, summand: BernoulliProgress) -> BernoulliProgress {
-        self + summand
-    }
-
     fn sub(self, subtrahend: BernoulliProgress) -> BernoulliProgress {
         BernoulliProgress {
             successes: self.successes - subtrahend.successes,
