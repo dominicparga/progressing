@@ -1,31 +1,31 @@
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [package]
-name = "progressing"
+name = 'progressing'
 # Changing this version in release and pushing to GitHub
 # will lead to publishing it automatically to crates.io.
 # Hence do not forget updating Unreleased in CHANGELOG.md.
-version = "2.2.3" # !!!
-description = "A lightweight, text-based, counting progress-bar for Rust"
-edition = "2018"
+version = '2.2.3' # !!!
+description = 'A lightweight, text-based, counting progress-bar for Rust'
+edition = '2018'
 
 authors = [
-    "Parga Cacheiro, Dominic (dominic.parga@gmail.com)",
+    'Parga Cacheiro, Dominic (dominic.parga@gmail.com)',
 ]
-repository = "https://github.com/dominicparga/progressing"
-readme = "README.md"
-keywords = ["progressbar", "progress", "pbr", "logging", "counting"]
-categories = ["command-line-interface"]
-license = "Apache-2.0"
+repository = 'https://github.com/dominicparga/progressing'
+readme = 'README.md'
+keywords = ['progressbar', 'progress', 'pbr', 'logging', 'counting']
+categories = ['command-line-interface']
+license = 'Apache-2.0'
 
 
 [[example]]
-name = "simple"
-path = "examples/simple.rs"
+name = 'simple'
+path = 'examples/simple.rs'
 
 [[example]]
-name = "loops"
-path = "examples/loops.rs"
+name = 'loops'
+path = 'examples/loops.rs'
 
 
 [dependencies]
