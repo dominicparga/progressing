@@ -79,4 +79,12 @@ pub trait Bar {
     {
         self.set(self.progress() + delta.into());
     }
+
+    fn start(&self) -> Self::Progress;
+
+    fn end(&self) -> Self::Progress;
+
+    fn has_progressed_much(&self) -> bool;
+
+    fn remember_progress(&mut self);
 }

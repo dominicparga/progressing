@@ -27,6 +27,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Add `rustfmt` to github-workflows.
 - Add tests running examples.
 - Add wrapping `TimedBar` for approximating remaining time.
+- Add printing bar dependent on relative progress (`has_progressed_much()` + `remember_progress()`).
 
 
 ### Changed <a name="unreleased/changed"></a>

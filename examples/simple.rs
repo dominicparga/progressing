@@ -47,7 +47,7 @@ fn bernoulli() {
 /// [================>-] (4 / 5) ~ 2 min
 fn timed_mapped() {
     println!("Mapping from [-9, 5] to [0, 1], but with time-approximation");
-    let progress_bar = progressing::MappingBar::new(-9..=5);
+    let progress_bar = progressing::MappingBar::new(-9, 5);
     let mut progress_bar = progressing::TimedBar::new(progress_bar);
     progress_bar.set_len(20);
     progress_bar.set(4);

@@ -1,5 +1,4 @@
 use crate::{Bar, ClampingBar};
-use kissunits::quantity::Promille;
 use std::fmt::{self, Display};
 
 pub fn inner_bar<N>(mapping_bar: &MappingBar<N>) -> &ClampingBar {
@@ -33,22 +32,11 @@ pub struct MappingBar<N> {
     k: N,
 }
 
-impl<N> MappingBar<N>
-where
-    N: Copy,
-{
-    pub fn start(&self) -> N {
-        self.min_k
-    }
-
-    pub fn end(&self) -> N {
-        self.max_k
-    }
-}
-
 impl<N> Display for MappingBar<N>
 where
-    N: Display + Copy,
+    N: Display,
+    MappingBar<N>: Bar,
+    <MappingBar<N> as Bar>::Progress: Display,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ({} / {})", self.bar, self.k, self.end())
@@ -57,14 +45,14 @@ where
 
 impl<N> MappingBar<N>
 where
-    N: Default,
+    N: Default + Clone,
 {
     pub fn new(min_k: N, max_k: N) -> MappingBar<N> {
         MappingBar {
             bar: ClampingBar::new(),
-            min_k: min_k,
+            min_k: min_k.clone(),
             max_k: max_k,
-            k: N::default(),
+            k: min_k.clone(),
         }
     }
 }
@@ -94,7 +82,23 @@ impl Bar for MappingBar<usize> {
         // calculate new progress
         let delta = new_progress - self.start();
         let max_delta = self.end() - self.start();
-        self.bar.set(Promille::from_div(delta, max_delta));
+        self.bar.set(delta as f64 / (max_delta as f64));
+    }
+
+    fn start(&self) -> usize {
+        self.min_k
+    }
+
+    fn end(&self) -> usize {
+        self.max_k
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
     }
 }
 
@@ -124,7 +128,23 @@ impl Bar for MappingBar<i64> {
         // guaranteed to be positive or 0
         let delta = (new_progress - self.start()) as usize;
         let max_delta = (self.end() - self.start()) as usize;
-        self.bar.set(Promille::from_div(delta, max_delta));
+        self.bar.set(delta as f64 / (max_delta as f64));
+    }
+
+    fn start(&self) -> i64 {
+        self.min_k
+    }
+
+    fn end(&self) -> i64 {
+        self.max_k
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
     }
 }
 
@@ -154,6 +174,22 @@ impl Bar for MappingBar<i32> {
         // guaranteed to be positive or 0
         let delta = (new_progress - self.start()) as usize;
         let max_delta = (self.end() - self.start()) as usize;
-        self.bar.set(Promille::from_div(delta, max_delta));
+        self.bar.set(delta as f64 / (max_delta as f64));
+    }
+
+    fn start(&self) -> i32 {
+        self.min_k
+    }
+
+    fn end(&self) -> i32 {
+        self.max_k
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
     }
 }

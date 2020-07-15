@@ -28,16 +28,6 @@ pub struct BernoulliBar {
 }
 
 impl BernoulliBar {
-    pub fn start(&self) -> usize {
-        self.bar.start()
-    }
-
-    pub fn end(&self) -> usize {
-        self.bar.end()
-    }
-}
-
-impl BernoulliBar {
     pub fn from_goal(n: usize) -> BernoulliBar {
         BernoulliBar {
             bar: MappingBar::new(0, n),
@@ -71,6 +61,28 @@ impl Bar for BernoulliBar {
         let outcome = outcome.into();
         self.bar.set(outcome.successes);
         self.attempts = outcome.attempts;
+    }
+
+    fn start(&self) -> BernoulliProgress {
+        BernoulliProgress {
+            successes: self.bar.start(),
+            attempts: 0,
+        }
+    }
+
+    fn end(&self) -> BernoulliProgress {
+        BernoulliProgress {
+            successes: self.bar.end(),
+            attempts: 1,
+        }
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
     }
 }
 

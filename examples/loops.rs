@@ -20,21 +20,29 @@ fn clamped() {
         "The bar is running from {} % to {} % clamping to [0, 1].",
         min_value, max_value
     );
-    println!("Note the respective pause at the beginning and the end.");
+    println!(
+        "{}{}",
+        "Note the respective pause at the beginning and the end, ",
+        "which causes the approximated time to be too high."
+    );
 
     // create bar
-    let mut progress_bar = progressing::ClampingBar::new();
+    let progress_bar = progressing::ClampingBar::new();
+    let mut progress_bar = progressing::TimedBar::new(progress_bar);
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
         progress_bar.set(value as f32 / 100.0);
-        print!("\r{}", progress_bar);
+        if progress_bar.has_progressed_much() {
+            progress_bar.remember_progress();
+            println!("{}", progress_bar);
+        }
 
         // sleep for visual effects ;)
         thread::sleep(time::Duration::from_millis(SLEEP_MS));
     }
     // add new line to finished progress-bar
-    println!("\r{}", progress_bar);
+    println!("{}", progress_bar);
 }
 
 fn mapped() {
@@ -55,13 +63,16 @@ fn mapped() {
     // do the job and show progress
     for value in min_value..(max_value + 1) {
         progress_bar.set(value);
-        print!("\r{}", progress_bar);
+        if progress_bar.has_progressed_much() {
+            progress_bar.remember_progress();
+            println!("{}", progress_bar);
+        }
 
         // sleep for visual effects ;)
         thread::sleep(time::Duration::from_millis(SLEEP_MS));
     }
     // add new line to finished progress-bar
-    println!("\r{}", progress_bar);
+    println!("{}", progress_bar);
 }
 
 fn bernoulli() {
@@ -74,11 +85,11 @@ fn bernoulli() {
         max_value,
         (max_value - min_value) + 1
     );
-    println!("Note that the bar expects less successes than provided.");
+    println!("Note that the bar expects less successes than provided .");
 
     // create bar
     let mut progress_bar = progressing::BernoulliBar::from_goal(60);
-    // you can reset the lenght of it
+    // you can reset the length of it
     progress_bar.set_len(60);
 
     // do the job and show progress
@@ -86,11 +97,14 @@ fn bernoulli() {
         // job is successful if value is even
         let is_successful = value % 2 == 0;
         progress_bar.add(is_successful);
-        print!("\r{}", progress_bar);
+        if progress_bar.has_progressed_much() {
+            progress_bar.remember_progress();
+            println!("{}", progress_bar);
+        }
 
         // sleep for visual effects ;)
         thread::sleep(time::Duration::from_millis(SLEEP_MS));
     }
     // add new line to finished progress-bar
-    println!("\r{}", progress_bar);
+    println!("{}", progress_bar);
 }
