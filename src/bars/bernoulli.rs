@@ -1,7 +1,7 @@
 use crate::{bars::mapping, Bar, MappingBar, Progress};
 use std::{
     fmt::{self, Display},
-    ops::{Add, AddAssign},
+    ops::{Add, AddAssign, Sub},
 };
 
 /// A progress-bar counting successes (e.g. `42 out of 60`) and respective attempts (e.g. `130`).
@@ -138,14 +138,18 @@ impl AddAssign for BernoulliProgress {
     }
 }
 
-impl Progress for BernoulliProgress {
+impl Sub for BernoulliProgress {
+    type Output = BernoulliProgress;
+
     fn sub(self, subtrahend: BernoulliProgress) -> BernoulliProgress {
         BernoulliProgress {
             successes: self.successes - subtrahend.successes,
             attempts: self.attempts - subtrahend.attempts,
         }
     }
+}
 
+impl Progress for BernoulliProgress {
     fn div(self, divisor: BernoulliProgress) -> f64 {
         (self.successes as f64) / (divisor.successes as f64)
     }

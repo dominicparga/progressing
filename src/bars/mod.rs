@@ -80,66 +80,40 @@ pub trait Bar {
 }
 
 pub trait Progress<Rhs = Self> {
-    fn sub(self, subtrahend: Rhs) -> Self;
-
     fn div(self, divisor: Rhs) -> f64;
 }
 
 impl Progress for f64 {
-    fn sub(self, subtrahend: f64) -> f64 {
-        self - subtrahend
-    }
-
     fn div(self, divisor: f64) -> f64 {
         self / divisor
     }
 }
 
 impl Progress for usize {
-    fn sub(self, subtrahend: usize) -> usize {
-        self - subtrahend
-    }
-
     fn div(self, divisor: usize) -> f64 {
         (self as f64) / (divisor as f64)
     }
 }
 
 impl Progress for u64 {
-    fn sub(self, subtrahend: u64) -> u64 {
-        self - subtrahend
-    }
-
     fn div(self, divisor: u64) -> f64 {
         (self as f64) / (divisor as f64)
     }
 }
 
 impl Progress for u32 {
-    fn sub(self, subtrahend: u32) -> u32 {
-        self - subtrahend
-    }
-
     fn div(self, divisor: u32) -> f64 {
         (self as f64) / (divisor as f64)
     }
 }
 
 impl Progress for i64 {
-    fn sub(self, subtrahend: i64) -> i64 {
-        self - subtrahend
-    }
-
     fn div(self, divisor: i64) -> f64 {
         (self as f64) / (divisor as f64)
     }
 }
 
 impl Progress for i32 {
-    fn sub(self, subtrahend: i32) -> i32 {
-        self - subtrahend
-    }
-
     fn div(self, divisor: i32) -> f64 {
         (self as f64) / (divisor as f64)
     }
