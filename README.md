@@ -31,6 +31,15 @@ progress_bar.set_len(20);
 progress_bar.set(4);
 println!("{}", progress_bar);
 
+/// Mapping from [-9, 5] to [0, 1], but with time-approximation
+/// [================>-] (4 / 5) ~ 2 min
+  println!("Mapping from [-9, 5] to [0, 1], but with time-approximation");
+  let progress_bar = progressing::MappingBar::new(-9..=5);
+  let mut progress_bar = progressing::TimedBar::new(progress_bar);
+  progress_bar.set_len(20);
+  progress_bar.set(4);
+  println!("{}", progress_bar);
+
 // Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
 // [============>-----] (42 / 60 # 130)
 let mut progress_bar = progressing::BernoulliBar::from_goal(60);

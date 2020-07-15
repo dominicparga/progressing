@@ -4,6 +4,8 @@ mod clamping;
 pub use clamping::ClampingBar;
 mod mapping;
 pub use mapping::MappingBar;
+mod timed;
+pub use timed::TimedBar;
 
 /// A trait describing basic functionality for simple text-based progress-bars.
 ///
