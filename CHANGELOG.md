@@ -24,23 +24,32 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ### Added <a name="unreleased/added"></a>
 
-\-
+- Add `rustfmt` to github-workflows.
+- Add tests running examples.
+- Add wrapping `TimedBar` for approximating remaining time.
+- Add printing bar dependent on relative progress (`has_progressed_much()` + `remember_progress()`).
 
 
 ### Changed <a name="unreleased/changed"></a>
 
-\-
+- Update README.
+- Make implementation much more explicit and easier by removing `reprint(...)` and refactoring `Bar`:
+  - Change data-types to more convenient ones (e.g. u32 -> usize).
+  - Implement `add(...)` based on `set(...)`
+  - Implement other calculations for progress to support a generic progress-calculation.
+    They are implemented only for some types, e.g. `usize`, `u64`, `f64`, `i64`, but new ones can be added easily.
+  - Implement style using a `String` (e.g. `[=>-]` -> `(#..)`)
 
 
 ### Deprecated <a name="unreleased/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
-- Bar-styles to easily and safely configure bar-styles (e.g. `[====>---]` -> `[====o---]`)
 
 
 ### Removed <a name="unreleased/removed"></a>
 
-\-
+- Remove `reprint(...)`-functions since they are dependent on the used writer/channel.
+  -> Update examples.
 
 
 ### Fixed <a name="unreleased/fixed"></a>

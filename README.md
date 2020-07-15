@@ -14,6 +14,8 @@
 
 ## Look and feel
 
+> NOTE: The examples below use `set(...)`, but `add(...)` is supported as well.
+
 ```rust
 // Printing value 0.3 clamped to [0, 1]
 // [=====>------------]
@@ -22,20 +24,21 @@ progress_bar.set_len(20);
 progress_bar.set(0.3);
 println!("{}", progress_bar);
 
-// different custom styles possible
-progress_bar.set_style("(->.)");
-println!("{}", progress_bar);
-progress_bar.set_style("[#  ]");
-println!("{}", progress_bar);
-progress_bar.set_style("(#--)");
-println!("{}", progress_bar);
-
 // Mapping from [-9, 5] to [0, 1]
 // [================>-] (4 / 5)
-let mut progress_bar = progressing::MappingBar::new(-9..=5);
+let mut progress_bar = progressing::MappingBar::new(-9, 5);
 progress_bar.set_len(20);
 progress_bar.set(4);
 println!("{}", progress_bar);
+
+/// Mapping from [-9, 5] to [0, 1], but with time-approximation
+/// [================>-] (4 / 5) ~ 2 min
+  println!("Mapping from [-9, 5] to [0, 1], but with time-approximation");
+  let progress_bar = progressing::MappingBar::new(-9..=5);
+  let mut progress_bar = progressing::TimedBar::new(progress_bar);
+  progress_bar.set_len(20);
+  progress_bar.set(4);
+  println!("{}", progress_bar);
 
 // Bernoulli-Bar counting successes (42 / 60) and attempts (# 130)
 // [============>-----] (42 / 60 # 130)
@@ -48,6 +51,14 @@ println!("{}", progress_bar);
 let mut progress_bar = progressing::ClampingBar::new();
 progress_bar.set_len(20);
 progress_bar.set(0.3);
+
+// different custom styles possible
+progress_bar.set_style("(->.)");
+println!("{}", progress_bar);
+progress_bar.set_style("[#  ]");
+println!("{}", progress_bar);
+progress_bar.set_style("(#--)");
+println!("{}", progress_bar);
 ```
 
 

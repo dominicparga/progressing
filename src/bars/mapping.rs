@@ -1,8 +1,5 @@
-use crate::{Bar, ClampingBar, Progress};
-use std::{
-    fmt::{self, Display},
-    ops::RangeInclusive,
-};
+use crate::{Bar, ClampingBar};
+use std::fmt::{self, Display};
 
 pub fn inner_bar<N>(mapping_bar: &MappingBar<N>) -> &ClampingBar {
     &mapping_bar.bar
@@ -21,7 +18,7 @@ pub fn inner_k<N>(mapping_bar: &MappingBar<N>) -> &N {
 /// /// [================>-] (4 / 5)
 /// fn main() {
 ///     println!("Mapping from [-9, 5] to [0, 1]");
-///     let mut progress_bar = progressing::MappingBar::new(-9..=5);
+///     let mut progress_bar = progressing::MappingBar::new(-9, 5);
 ///     progress_bar.set_len(20);
 ///     progress_bar.set(4);
 ///     println!("{}", progress_bar);
@@ -30,26 +27,16 @@ pub fn inner_k<N>(mapping_bar: &MappingBar<N>) -> &N {
 #[derive(Debug)]
 pub struct MappingBar<N> {
     bar: ClampingBar,
-    range: RangeInclusive<N>,
+    min_k: N,
+    max_k: N,
     k: N,
-}
-
-impl<N> MappingBar<N>
-where
-    N: Copy,
-{
-    pub fn start(&self) -> N {
-        *(self.range.start())
-    }
-
-    pub fn end(&self) -> N {
-        *(self.range.end())
-    }
 }
 
 impl<N> Display for MappingBar<N>
 where
-    N: Display + Copy,
+    N: Display,
+    MappingBar<N>: Bar,
+    <MappingBar<N> as Bar>::Progress: Display,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ({} / {})", self.bar, self.k, self.end())
@@ -58,22 +45,20 @@ where
 
 impl<N> MappingBar<N>
 where
-    N: Default,
+    N: Default + Clone,
 {
-    pub fn new(range: RangeInclusive<N>) -> MappingBar<N> {
+    pub fn new(min_k: N, max_k: N) -> MappingBar<N> {
         MappingBar {
             bar: ClampingBar::new(),
-            range,
-            k: N::default(),
+            min_k: min_k.clone(),
+            max_k: max_k,
+            k: min_k.clone(),
         }
     }
 }
 
-impl<N> Bar for MappingBar<N>
-where
-    N: Progress + Copy,
-{
-    type Progress = N;
+impl Bar for MappingBar<usize> {
+    type Progress = usize;
 
     fn len(&self) -> usize {
         self.bar.len()
@@ -83,21 +68,128 @@ where
         self.bar.set_len(new_bar_len)
     }
 
-    fn progress(&self) -> N {
+    fn progress(&self) -> usize {
         self.k
     }
 
     fn set<P>(&mut self, new_progress: P)
     where
-        P: Into<N>,
+        P: Into<usize>,
     {
         let new_progress = new_progress.into();
         self.k = new_progress;
 
         // calculate new progress
-        let k_min = self.start();
-        let k_max = self.end();
-        let k = new_progress;
-        self.bar.set(k.sub(k_min).div(k_max.sub(k_min)));
+        let delta = new_progress - self.start();
+        let max_delta = self.end() - self.start();
+        self.bar.set(delta as f64 / (max_delta as f64));
+    }
+
+    fn start(&self) -> usize {
+        self.min_k
+    }
+
+    fn end(&self) -> usize {
+        self.max_k
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
+    }
+}
+
+impl Bar for MappingBar<i64> {
+    type Progress = i64;
+
+    fn len(&self) -> usize {
+        self.bar.len()
+    }
+
+    fn set_len(&mut self, new_bar_len: usize) {
+        self.bar.set_len(new_bar_len)
+    }
+
+    fn progress(&self) -> i64 {
+        self.k
+    }
+
+    fn set<P>(&mut self, new_progress: P)
+    where
+        P: Into<i64>,
+    {
+        let new_progress = new_progress.into();
+        self.k = new_progress;
+
+        // calculate new progress
+        // guaranteed to be positive or 0
+        let delta = (new_progress - self.start()) as usize;
+        let max_delta = (self.end() - self.start()) as usize;
+        self.bar.set(delta as f64 / (max_delta as f64));
+    }
+
+    fn start(&self) -> i64 {
+        self.min_k
+    }
+
+    fn end(&self) -> i64 {
+        self.max_k
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
+    }
+}
+
+impl Bar for MappingBar<i32> {
+    type Progress = i32;
+
+    fn len(&self) -> usize {
+        self.bar.len()
+    }
+
+    fn set_len(&mut self, new_bar_len: usize) {
+        self.bar.set_len(new_bar_len)
+    }
+
+    fn progress(&self) -> i32 {
+        self.k
+    }
+
+    fn set<P>(&mut self, new_progress: P)
+    where
+        P: Into<i32>,
+    {
+        let new_progress = new_progress.into();
+        self.k = new_progress;
+
+        // calculate new progress
+        // guaranteed to be positive or 0
+        let delta = (new_progress - self.start()) as usize;
+        let max_delta = (self.end() - self.start()) as usize;
+        self.bar.set(delta as f64 / (max_delta as f64));
+    }
+
+    fn start(&self) -> i32 {
+        self.min_k
+    }
+
+    fn end(&self) -> i32 {
+        self.max_k
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
     }
 }

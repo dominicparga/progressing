@@ -5,6 +5,34 @@ use std::{
     fmt::{self, Display},
 };
 
+#[derive(Debug)]
+struct PrintController {
+    last_printed_progress: Option<f64>,
+    interesting_progress_step: f64,
+}
+
+impl PrintController {
+    fn from(interesting_progress_step: f64) -> PrintController {
+        PrintController {
+            last_printed_progress: None,
+            interesting_progress_step,
+        }
+    }
+
+    fn map(&self, progress: f64) -> usize {
+        let scale = 1_000.0;
+        (progress * scale) as usize / ((scale * self.interesting_progress_step) as usize)
+    }
+
+    fn has_progressed_much(&self, progress: f64) -> bool {
+        self.map(progress) > self.map(self.last_printed_progress.unwrap_or(0.0))
+    }
+
+    fn update(&mut self, progress: f64) {
+        self.last_printed_progress = Some(progress);
+    }
+}
+
 /// A progress-bar clamping values to `[0, 1]`.
 ///
 ///
@@ -30,29 +58,36 @@ pub struct ClampingBar {
     bar_len: usize,
     style: String,
     progress: f64,
+    print_controller: PrintController,
 }
 
-impl Default for ClampingBar {
-    fn default() -> Self {
-        ClampingBar {
+pub struct Config {
+    pub bar_len: usize,
+    pub style: String,
+    pub interesting_progress_step: f64,
+}
+
+impl Config {
+    fn new() -> Config {
+        Config {
             bar_len: 42,
-            style: String::from("[=>-]"),
-            progress: 0.0,
+            style: String::from("[=>.]"),
+            interesting_progress_step: 0.1,
         }
     }
 }
 
 impl ClampingBar {
     pub fn new() -> ClampingBar {
-        ClampingBar {
-            ..Default::default()
-        }
+        ClampingBar::from(Config::new())
     }
 
-    pub fn from(bar_len: usize) -> ClampingBar {
+    pub fn from(cfg: Config) -> ClampingBar {
         ClampingBar {
-            bar_len,
-            ..Default::default()
+            bar_len: cfg.bar_len,
+            style: cfg.style,
+            progress: 0.0,
+            print_controller: PrintController::from(cfg.interesting_progress_step),
         }
     }
 
@@ -127,6 +162,22 @@ impl Bar for ClampingBar {
         }
         self.progress = new_progress;
     }
+
+    fn start(&self) -> f64 {
+        0.0
+    }
+
+    fn end(&self) -> f64 {
+        1.0
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.print_controller.has_progressed_much(self.progress())
+    }
+
+    fn remember_progress(&mut self) {
+        self.print_controller.update(self.progress());
+    }
 }
 
 impl Display for ClampingBar {
@@ -135,7 +186,7 @@ impl Display for ClampingBar {
         // calc progress
         // -> bar needs to be calculated
         // -> no brackets involved
-        let reached = (self.progress * (self.inner_bar_len() as f64)) as usize;
+        let reached: usize = (self.progress * self.inner_bar_len() as f64) as usize;
 
         let line = self.line().repeat(reached);
         // crop hat if end of bar is reached

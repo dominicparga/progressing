@@ -1,7 +1,7 @@
-use crate::{bars::mapping, Bar, MappingBar, Progress};
+use crate::{bars::mapping, Bar, MappingBar};
 use std::{
     fmt::{self, Display},
-    ops::{Add, AddAssign},
+    ops::{Add, AddAssign, Div, Sub},
 };
 
 /// A progress-bar counting successes (e.g. `42 out of 60`) and respective attempts (e.g. `130`).
@@ -28,19 +28,9 @@ pub struct BernoulliBar {
 }
 
 impl BernoulliBar {
-    pub fn start(&self) -> usize {
-        self.bar.start()
-    }
-
-    pub fn end(&self) -> usize {
-        self.bar.end()
-    }
-}
-
-impl BernoulliBar {
     pub fn from_goal(n: usize) -> BernoulliBar {
         BernoulliBar {
-            bar: MappingBar::new(0..=n),
+            bar: MappingBar::new(0, n),
             attempts: 0,
         }
     }
@@ -72,6 +62,28 @@ impl Bar for BernoulliBar {
         self.bar.set(outcome.successes);
         self.attempts = outcome.attempts;
     }
+
+    fn start(&self) -> BernoulliProgress {
+        BernoulliProgress {
+            successes: self.bar.start(),
+            attempts: 0,
+        }
+    }
+
+    fn end(&self) -> BernoulliProgress {
+        BernoulliProgress {
+            successes: self.bar.end(),
+            attempts: 1,
+        }
+    }
+
+    fn has_progressed_much(&self) -> bool {
+        self.bar.has_progressed_much()
+    }
+
+    fn remember_progress(&mut self) {
+        self.bar.remember_progress()
+    }
 }
 
 impl Display for BernoulliBar {
@@ -95,7 +107,7 @@ pub struct BernoulliProgress {
 }
 
 impl From<(usize, usize)> for BernoulliProgress {
-    fn from((successes, attempts): (usize, usize)) -> Self {
+    fn from((successes, attempts): (usize, usize)) -> BernoulliProgress {
         BernoulliProgress {
             successes,
             attempts,
@@ -104,7 +116,7 @@ impl From<(usize, usize)> for BernoulliProgress {
 }
 
 impl From<usize> for BernoulliProgress {
-    fn from(successes: usize) -> Self {
+    fn from(successes: usize) -> BernoulliProgress {
         BernoulliProgress {
             successes,
             attempts: successes,
@@ -113,7 +125,7 @@ impl From<usize> for BernoulliProgress {
 }
 
 impl From<bool> for BernoulliProgress {
-    fn from(is_successful: bool) -> Self {
+    fn from(is_successful: bool) -> BernoulliProgress {
         BernoulliProgress {
             successes: if is_successful { 1 } else { 0 },
             attempts: 1,
@@ -138,10 +150,8 @@ impl AddAssign for BernoulliProgress {
     }
 }
 
-impl Progress for BernoulliProgress {
-    fn add(self, summand: BernoulliProgress) -> BernoulliProgress {
-        self + summand
-    }
+impl Sub for BernoulliProgress {
+    type Output = BernoulliProgress;
 
     fn sub(self, subtrahend: BernoulliProgress) -> BernoulliProgress {
         BernoulliProgress {
@@ -149,8 +159,12 @@ impl Progress for BernoulliProgress {
             attempts: self.attempts - subtrahend.attempts,
         }
     }
+}
 
-    fn div(self, divisor: BernoulliProgress) -> f64 {
-        (self.successes as f64) / (divisor.successes as f64)
+impl Div for BernoulliProgress {
+    type Output = f64;
+
+    fn div(self, dividend: BernoulliProgress) -> f64 {
+        self.successes as f64 / (dividend.successes as f64)
     }
 }
