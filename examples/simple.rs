@@ -25,7 +25,7 @@ fn clamped() {
 /// [================>-] (4 / 5)
 fn mapped() {
     println!("Mapping from [-9, 5] to [0, 1]");
-    let mut progress_bar = progressing::MappingBar::new(-9..=5);
+    let mut progress_bar = progressing::MappingBar::new(-9, 5);
     progress_bar.set_len(20);
     progress_bar.set(4);
     println!("{}", progress_bar);

@@ -1,4 +1,5 @@
 use crate::Bar;
+use kissunits::quantity::Promille;
 use log::warn;
 use std::{
     cmp::min,
@@ -29,7 +30,7 @@ use std::{
 pub struct ClampingBar {
     bar_len: usize,
     style: String,
-    progress: f64,
+    progress: Promille,
 }
 
 impl Default for ClampingBar {
@@ -37,7 +38,7 @@ impl Default for ClampingBar {
         ClampingBar {
             bar_len: 42,
             style: String::from("[=>-]"),
-            progress: 0.0,
+            progress: Promille(0),
         }
     }
 }
@@ -98,7 +99,7 @@ impl ClampingBar {
 }
 
 impl Bar for ClampingBar {
-    type Progress = f64;
+    type Progress = Promille;
 
     fn len(&self) -> usize {
         self.bar_len
@@ -109,21 +110,21 @@ impl Bar for ClampingBar {
         self.bar_len = new_bar_len;
     }
 
-    fn progress(&self) -> f64 {
+    fn progress(&self) -> Promille {
         self.progress
     }
 
     fn set<P>(&mut self, new_progress: P)
     where
-        P: Into<f64>,
+        P: Into<Promille>,
     {
         let mut new_progress = new_progress.into();
 
-        if new_progress < 0.0 {
-            new_progress = 0.0;
+        if new_progress < Promille::from(0) {
+            new_progress = Promille::from(0);
         }
-        if 1.0 < new_progress {
-            new_progress = 1.0;
+        if Promille::from(1) < new_progress {
+            new_progress = Promille::from(1);
         }
         self.progress = new_progress;
     }
@@ -135,7 +136,7 @@ impl Display for ClampingBar {
         // calc progress
         // -> bar needs to be calculated
         // -> no brackets involved
-        let reached = (self.progress * (self.inner_bar_len() as f64)) as usize;
+        let reached: usize = (self.progress * self.inner_bar_len()).into();
 
         let line = self.line().repeat(reached);
         // crop hat if end of bar is reached

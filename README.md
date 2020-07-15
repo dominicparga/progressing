@@ -26,7 +26,7 @@ println!("{}", progress_bar);
 
 // Mapping from [-9, 5] to [0, 1]
 // [================>-] (4 / 5)
-let mut progress_bar = progressing::MappingBar::new(-9..=5);
+let mut progress_bar = progressing::MappingBar::new(-9, 5);
 progress_bar.set_len(20);
 progress_bar.set(4);
 println!("{}", progress_bar);

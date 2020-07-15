@@ -13,8 +13,8 @@ fn main() {
 }
 
 fn clamped() {
-    let min_value = -40;
-    let max_value = 140;
+    let min_value = -80;
+    let max_value = 180;
 
     println!(
         "The bar is running from {} % to {} % clamping to [0, 1].",
@@ -40,15 +40,17 @@ fn clamped() {
 fn mapped() {
     let min_value = -10;
     let max_value = 100;
+    let min_bar_border = -40;
+    let max_bar_border = 140;
 
     println!(
-        "The bar is running from {} to {} mapping [-40, 140] to [0, 1].",
-        min_value, max_value
+        "The bar is running from {} to {}, but maps [{}, {}] to [0, 1].",
+        min_value, max_value, min_bar_border, max_bar_border
     );
     println!("Note that the bar neither starts nor ends at the bar-borders.");
 
     // create bar
-    let mut progress_bar = progressing::MappingBar::new(-40..=140);
+    let mut progress_bar = progressing::MappingBar::new(min_bar_border, max_bar_border);
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
