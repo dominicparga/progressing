@@ -95,7 +95,7 @@ pub struct BernoulliProgress {
 }
 
 impl From<(usize, usize)> for BernoulliProgress {
-    fn from((successes, attempts): (usize, usize)) -> Self {
+    fn from((successes, attempts): (usize, usize)) -> BernoulliProgress {
         BernoulliProgress {
             successes,
             attempts,
@@ -104,7 +104,7 @@ impl From<(usize, usize)> for BernoulliProgress {
 }
 
 impl From<usize> for BernoulliProgress {
-    fn from(successes: usize) -> Self {
+    fn from(successes: usize) -> BernoulliProgress {
         BernoulliProgress {
             successes,
             attempts: successes,
@@ -113,7 +113,7 @@ impl From<usize> for BernoulliProgress {
 }
 
 impl From<bool> for BernoulliProgress {
-    fn from(is_successful: bool) -> Self {
+    fn from(is_successful: bool) -> BernoulliProgress {
         BernoulliProgress {
             successes: if is_successful { 1 } else { 0 },
             attempts: 1,

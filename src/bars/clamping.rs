@@ -33,7 +33,7 @@ pub struct ClampingBar {
 }
 
 impl Default for ClampingBar {
-    fn default() -> Self {
+    fn default() -> ClampingBar {
         ClampingBar {
             bar_len: 42,
             style: String::from("[=>-]"),
