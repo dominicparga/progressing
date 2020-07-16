@@ -1,4 +1,4 @@
-use crate::Bar;
+use crate::{timing, Baring};
 use log::warn;
 use std::{
     cmp::min,
@@ -24,41 +24,13 @@ impl PrintController {
         (progress * scale) as usize / ((scale * self.interesting_progress_step) as usize)
     }
 
-    fn has_progressed_much(&self, progress: f64) -> bool {
+    fn has_progressed_significantly(&self, progress: f64) -> bool {
         self.map(progress) > self.map(self.last_printed_progress.unwrap_or(0.0))
     }
 
     fn update(&mut self, progress: f64) {
         self.last_printed_progress = Some(progress);
     }
-}
-
-/// A progress-bar clamping values to `[0, 1]`.
-///
-///
-/// # Mini-Example
-///
-/// ```
-/// use progressing::Bar;
-///
-/// /// Printing value 0.3 clamped to [0, 1]
-/// /// [=====>------------]
-/// fn main() {
-///     println!("Printing value 0.3 clamped to [0, 1]");
-///     let mut progress_bar = progressing::ClampingBar::new();
-///     progress_bar.set_len(20);
-///     progress_bar.set(0.3);
-///     println!("{}", progress_bar);
-/// }
-/// ```
-///
-/// It is only optimized for single-length-strings, but strings are more handy than chars and hence used as implementation.
-#[derive(Debug)]
-pub struct ClampingBar {
-    bar_len: usize,
-    style: String,
-    progress: f64,
-    print_controller: PrintController,
 }
 
 pub struct Config {
@@ -68,7 +40,13 @@ pub struct Config {
 }
 
 impl Config {
-    fn new() -> Config {
+    pub fn new() -> Config {
+        Config::default()
+    }
+}
+
+impl Default for Config {
+    fn default() -> Config {
         Config {
             bar_len: 42,
             style: String::from("[=>.]"),
@@ -77,18 +55,50 @@ impl Config {
     }
 }
 
-impl ClampingBar {
-    pub fn new() -> ClampingBar {
-        ClampingBar::from(Config::new())
+/// A progress-bar clamping values to `[0, 1]`.
+///
+///
+/// # Mini-Example
+///
+/// ```
+/// use progressing::{clamping::Bar as ClampingBar, Baring};
+///
+/// /// Printing value 0.3 clamped to [0, 1]
+/// /// [=====>------------]
+/// fn main() {
+///     println!("Printing value 0.3 clamped to [0, 1]");
+///     let mut progress_bar = ClampingBar::new();
+///     progress_bar.set_len(20);
+///     progress_bar.set(0.3);
+///     println!("{}", progress_bar);
+/// }
+/// ```
+///
+/// It is only optimized for single-length-strings, but strings are more handy than chars and hence used as implementation.
+#[derive(Debug)]
+pub struct Bar {
+    bar_len: usize,
+    style: String,
+    progress: f64,
+    print_controller: PrintController,
+}
+
+impl Bar {
+    pub fn new() -> Bar {
+        Bar::default()
     }
 
-    pub fn from(cfg: Config) -> ClampingBar {
-        ClampingBar {
+    pub fn with(cfg: Config) -> Bar {
+        Bar {
             bar_len: cfg.bar_len,
             style: cfg.style,
             progress: 0.0,
             print_controller: PrintController::from(cfg.interesting_progress_step),
         }
+    }
+
+    pub fn timed(self) -> timing::Bar<Bar> {
+        timing::Bar::with(self)
     }
 
     pub fn set_style<S>(&mut self, style: S)
@@ -132,7 +142,13 @@ impl ClampingBar {
     }
 }
 
-impl Bar for ClampingBar {
+impl Default for Bar {
+    fn default() -> Bar {
+        Bar::with(Config::default())
+    }
+}
+
+impl Baring for Bar {
     type Progress = f64;
 
     fn len(&self) -> usize {
@@ -171,16 +187,17 @@ impl Bar for ClampingBar {
         1.0
     }
 
-    fn has_progressed_much(&self) -> bool {
-        self.print_controller.has_progressed_much(self.progress())
+    fn has_progressed_significantly(&self) -> bool {
+        self.print_controller
+            .has_progressed_significantly(self.progress())
     }
 
-    fn remember_progress(&mut self) {
+    fn remember_significant_progress(&mut self) {
         self.print_controller.update(self.progress());
     }
 }
 
-impl Display for ClampingBar {
+impl Display for Bar {
     /// Progress is clamped to `[0, 1]`.
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // calc progress

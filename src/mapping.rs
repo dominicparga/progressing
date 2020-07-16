@@ -1,63 +1,98 @@
-use crate::{Bar, ClampingBar};
+use crate::{clamping, timing, Baring};
 use std::fmt::{self, Display};
 
-pub fn inner_bar<N>(mapping_bar: &MappingBar<N>) -> &ClampingBar {
-    &mapping_bar.bar
+pub struct Config<N> {
+    pub bar_len: usize,
+    pub style: String,
+    pub interesting_progress_step: f64,
+    pub min_k: N,
+    pub max_k: N,
 }
 
-pub fn inner_k<N>(mapping_bar: &MappingBar<N>) -> &N {
-    &mapping_bar.k
+impl<N> Config<N> {
+    pub fn with(min_k: N, max_k: N) -> Config<N> {
+        // get defaults
+        let cfg = clamping::Config::new();
+
+        Config {
+            bar_len: cfg.bar_len,
+            style: cfg.style,
+            interesting_progress_step: cfg.interesting_progress_step,
+            min_k,
+            max_k,
+        }
+    }
 }
 
 /// A progress-bar mapping values from `[a, b]` (e.g. `[-9, 5]`) to `[0, 1]`.
 ///
 /// ```
-/// use progressing::Bar;
+/// use progressing::{mapping::Bar as MappingBar, Baring};
 ///
 /// /// Mapping from [-9, 5] to [0, 1]
 /// /// [================>-] (4 / 5)
 /// fn main() {
 ///     println!("Mapping from [-9, 5] to [0, 1]");
-///     let mut progress_bar = progressing::MappingBar::new(-9, 5);
+///     let mut progress_bar = MappingBar::with_range(-9, 5);
 ///     progress_bar.set_len(20);
 ///     progress_bar.set(4);
 ///     println!("{}", progress_bar);
 /// }
 /// ```
 #[derive(Debug)]
-pub struct MappingBar<N> {
-    bar: ClampingBar,
+pub struct Bar<N> {
+    pub(crate) bar: clamping::Bar,
     min_k: N,
     max_k: N,
     k: N,
 }
 
-impl<N> Display for MappingBar<N>
+impl<N> Display for Bar<N>
 where
     N: Display,
-    MappingBar<N>: Bar,
-    <MappingBar<N> as Bar>::Progress: Display,
+    Bar<N>: Baring,
+    <Bar<N> as Baring>::Progress: Display,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ({} / {})", self.bar, self.k, self.end())
     }
 }
 
-impl<N> MappingBar<N>
+impl<N> Bar<N>
 where
-    N: Default + Clone,
+    N: Clone,
 {
-    pub fn new(min_k: N, max_k: N) -> MappingBar<N> {
-        MappingBar {
-            bar: ClampingBar::new(),
-            min_k: min_k.clone(),
-            max_k: max_k,
-            k: min_k.clone(),
+    pub fn with_range(from: N, to: N) -> Bar<N> {
+        Bar {
+            bar: clamping::Bar::new(),
+            min_k: from.clone(),
+            max_k: to,
+            k: from,
         }
+    }
+
+    pub fn with(cfg: Config<N>) -> Bar<N> {
+        Bar {
+            bar: clamping::Bar::with(clamping::Config {
+                bar_len: cfg.bar_len,
+                style: cfg.style,
+                interesting_progress_step: cfg.interesting_progress_step,
+            }),
+            min_k: cfg.min_k.clone(),
+            max_k: cfg.max_k,
+            k: cfg.min_k,
+        }
+    }
+
+    pub fn timed(self) -> timing::Bar<Bar<N>>
+    where
+        Bar<N>: Baring,
+    {
+        timing::Bar::with(self)
     }
 }
 
-impl Bar for MappingBar<usize> {
+impl Baring for Bar<usize> {
     type Progress = usize;
 
     fn len(&self) -> usize {
@@ -93,16 +128,16 @@ impl Bar for MappingBar<usize> {
         self.max_k
     }
 
-    fn has_progressed_much(&self) -> bool {
-        self.bar.has_progressed_much()
+    fn has_progressed_significantly(&self) -> bool {
+        self.bar.has_progressed_significantly()
     }
 
-    fn remember_progress(&mut self) {
-        self.bar.remember_progress()
+    fn remember_significant_progress(&mut self) {
+        self.bar.remember_significant_progress()
     }
 }
 
-impl Bar for MappingBar<i64> {
+impl Baring for Bar<i64> {
     type Progress = i64;
 
     fn len(&self) -> usize {
@@ -139,16 +174,16 @@ impl Bar for MappingBar<i64> {
         self.max_k
     }
 
-    fn has_progressed_much(&self) -> bool {
-        self.bar.has_progressed_much()
+    fn has_progressed_significantly(&self) -> bool {
+        self.bar.has_progressed_significantly()
     }
 
-    fn remember_progress(&mut self) {
-        self.bar.remember_progress()
+    fn remember_significant_progress(&mut self) {
+        self.bar.remember_significant_progress()
     }
 }
 
-impl Bar for MappingBar<i32> {
+impl Baring for Bar<i32> {
     type Progress = i32;
 
     fn len(&self) -> usize {
@@ -185,11 +220,11 @@ impl Bar for MappingBar<i32> {
         self.max_k
     }
 
-    fn has_progressed_much(&self) -> bool {
-        self.bar.has_progressed_much()
+    fn has_progressed_significantly(&self) -> bool {
+        self.bar.has_progressed_significantly()
     }
 
-    fn remember_progress(&mut self) {
-        self.bar.remember_progress()
+    fn remember_significant_progress(&mut self) {
+        self.bar.remember_significant_progress()
     }
 }

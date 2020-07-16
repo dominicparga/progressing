@@ -1,4 +1,7 @@
-use progressing::{self, Bar};
+use progressing::{
+    bernoulli::Bar as BernoulliBar, clamping::Bar as ClampingBar, mapping::Bar as MappingBar,
+    Baring,
+};
 use std::{thread, time};
 
 const SLEEP_MS: u64 = 20;
@@ -27,14 +30,13 @@ fn clamped() {
     );
 
     // create bar
-    let progress_bar = progressing::ClampingBar::new();
-    let mut progress_bar = progressing::TimedBar::new(progress_bar);
+    let mut progress_bar = ClampingBar::new().timed();
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
         progress_bar.set(value as f32 / 100.0);
-        if progress_bar.has_progressed_much() {
-            progress_bar.remember_progress();
+        if progress_bar.has_progressed_significantly() {
+            progress_bar.remember_significant_progress();
             println!("{}", progress_bar);
         }
 
@@ -58,13 +60,13 @@ fn mapped() {
     println!("Note that the bar neither starts nor ends at the bar-borders.");
 
     // create bar
-    let mut progress_bar = progressing::MappingBar::new(min_bar_border, max_bar_border);
+    let mut progress_bar = MappingBar::with_range(min_bar_border, max_bar_border);
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
         progress_bar.set(value);
-        if progress_bar.has_progressed_much() {
-            progress_bar.remember_progress();
+        if progress_bar.has_progressed_significantly() {
+            progress_bar.remember_significant_progress();
             println!("{}", progress_bar);
         }
 
@@ -88,7 +90,7 @@ fn bernoulli() {
     println!("Note that the bar expects less successes than provided .");
 
     // create bar
-    let mut progress_bar = progressing::BernoulliBar::from_goal(60);
+    let mut progress_bar = BernoulliBar::with_goal(60);
     // you can reset the length of it
     progress_bar.set_len(60);
 
@@ -97,8 +99,8 @@ fn bernoulli() {
         // job is successful if value is even
         let is_successful = value % 2 == 0;
         progress_bar.add(is_successful);
-        if progress_bar.has_progressed_much() {
-            progress_bar.remember_progress();
+        if progress_bar.has_progressed_significantly() {
+            progress_bar.remember_significant_progress();
             println!("{}", progress_bar);
         }
 

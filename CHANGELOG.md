@@ -27,7 +27,7 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 - Add `rustfmt` to github-workflows.
 - Add tests running examples.
 - Add wrapping `TimedBar` for approximating remaining time.
-- Add printing bar dependent on relative progress (`has_progressed_much()` + `remember_progress()`).
+- Add printing bar dependent on relative progress (`has_progressed_significantly()` + `remember_significant_progress()`).
 
 
 ### Changed <a name="unreleased/changed"></a>
@@ -39,6 +39,10 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
   - Implement other calculations for progress to support a generic progress-calculation.
     They are implemented only for some types, e.g. `usize`, `u64`, `f64`, `i64`, but new ones can be added easily.
   - Implement style using a `String` (e.g. `[=>-]` -> `(#..)`)
+  - Hold on style-guidelines (`new()` without parameters, `with(cfg: Config)` for convenient constructors)
+  - Use `pub(crate)` for better control of visibility.
+  - Implement `timed(self)` to get a timed bar.
+  - Rename bars to support usage of modules explicitly (e.g. `use mapping::Bar as MappingBar` or `use progressing::mapping::Bar as ProgressingMappingBar` etc. instead of `use mapping::MappingBar` or `use progressing::MappingBar`)
 
 
 ### Deprecated <a name="unreleased/deprecated"></a>

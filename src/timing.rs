@@ -1,25 +1,25 @@
-use crate::{Bar, BernoulliBar, ClampingBar, MappingBar};
+use crate::{bernoulli::Bar as BernoulliBar, clamping, mapping, Baring};
 use std::{
     fmt::{self, Display},
     time::Instant,
 };
 
 #[derive(Debug)]
-pub struct TimedBar<B>
+pub struct Bar<B>
 where
-    B: Bar,
+    B: Baring,
 {
     bar: B,
     now: Instant,
     is_remembering_progress: bool,
 }
 
-impl<B> TimedBar<B>
+impl<B> Bar<B>
 where
-    B: Bar,
+    B: Baring,
 {
-    pub fn new(bar: B) -> TimedBar<B> {
-        TimedBar {
+    pub(crate) fn with(bar: B) -> Bar<B> {
+        Bar {
             bar,
             now: Instant::now(),
             is_remembering_progress: false,
@@ -27,9 +27,9 @@ where
     }
 }
 
-impl<B> Bar for TimedBar<B>
+impl<B> Baring for Bar<B>
 where
-    B: Bar,
+    B: Baring,
 {
     type Progress = B::Progress;
 
@@ -61,13 +61,13 @@ where
         self.bar.end()
     }
 
-    fn has_progressed_much(&self) -> bool {
-        self.bar.has_progressed_much()
+    fn has_progressed_significantly(&self) -> bool {
+        self.bar.has_progressed_significantly()
             || (!self.is_remembering_progress && (self.now.elapsed().as_millis() > 60_000))
     }
 
-    fn remember_progress(&mut self) {
-        self.bar.remember_progress();
+    fn remember_significant_progress(&mut self) {
+        self.bar.remember_significant_progress();
         self.is_remembering_progress = true;
     }
 }
@@ -75,7 +75,7 @@ where
 //------------------------------------------------------------------------------------------------//
 // displaying time
 
-impl TimedBar<ClampingBar> {
+impl Bar<clamping::Bar> {
     fn approx_time(&self) -> String {
         let progress = self.progress();
         if progress > self.start() {
@@ -102,15 +102,15 @@ impl TimedBar<ClampingBar> {
     }
 }
 
-impl Display for TimedBar<ClampingBar> {
+impl Display for Bar<clamping::Bar> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ~ {}", self.bar, self.approx_time())
     }
 }
 
-impl TimedBar<MappingBar<usize>>
+impl Bar<mapping::Bar<usize>>
 where
-    MappingBar<usize>: Bar,
+    mapping::Bar<usize>: Baring,
 {
     fn approx_time(&self) -> String {
         let progress = self.progress();
@@ -138,18 +138,18 @@ where
     }
 }
 
-impl Display for TimedBar<MappingBar<usize>>
+impl Display for Bar<mapping::Bar<usize>>
 where
-    MappingBar<usize>: Bar,
+    mapping::Bar<usize>: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ~ {}", self.bar, self.approx_time())
     }
 }
 
-impl TimedBar<MappingBar<i64>>
+impl Bar<mapping::Bar<i64>>
 where
-    MappingBar<i64>: Bar,
+    mapping::Bar<i64>: Baring,
 {
     fn approx_time(&self) -> String {
         let progress = self.progress();
@@ -177,18 +177,18 @@ where
     }
 }
 
-impl Display for TimedBar<MappingBar<i64>>
+impl Display for Bar<mapping::Bar<i64>>
 where
-    MappingBar<i64>: Bar,
+    mapping::Bar<i64>: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ~ {}", self.bar, self.approx_time())
     }
 }
 
-impl TimedBar<MappingBar<i32>>
+impl Bar<mapping::Bar<i32>>
 where
-    MappingBar<i32>: Bar,
+    mapping::Bar<i32>: Baring,
 {
     fn approx_time(&self) -> String {
         let progress = self.progress();
@@ -216,18 +216,18 @@ where
     }
 }
 
-impl Display for TimedBar<MappingBar<i32>>
+impl Display for Bar<mapping::Bar<i32>>
 where
-    MappingBar<i32>: Bar,
+    mapping::Bar<i32>: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ~ {}", self.bar, self.approx_time())
     }
 }
 
-impl TimedBar<BernoulliBar>
+impl Bar<BernoulliBar>
 where
-    BernoulliBar: Bar,
+    BernoulliBar: Baring,
 {
     fn approx_time(&self) -> String {
         let progress = self.progress();
@@ -256,9 +256,9 @@ where
     }
 }
 
-impl Display for TimedBar<BernoulliBar>
+impl Display for Bar<BernoulliBar>
 where
-    BernoulliBar: Bar,
+    BernoulliBar: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{} ~ {}", self.bar, self.approx_time())
