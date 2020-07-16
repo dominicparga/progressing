@@ -94,14 +94,7 @@ impl Baring for Bar {
 
 impl Display for Bar {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "{} ({} / {} # {})",
-            self.bar,
-            self.bar.progress(),
-            self.bar.end(),
-            self.attempts
-        )
+        write!(f, "{} #{}", self.bar, self.attempts)
     }
 }
 

@@ -54,7 +54,7 @@ where
     <Bar<N> as Baring>::Progress: Display,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ({} / {})", self.bar, self.k, self.end())
+        write!(f, "{} ({}/{})", self.bar, self.k, self.end())
     }
 }
 

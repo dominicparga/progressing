@@ -95,7 +95,7 @@ impl Bar<clamping::Bar> {
                 unit = "min";
             }
 
-            format!("{} {}", elapsed, unit)
+            format!("{}{}", elapsed, unit)
         } else {
             String::from("inf s")
         }
@@ -104,7 +104,7 @@ impl Bar<clamping::Bar> {
 
 impl Display for Bar<clamping::Bar> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ~ {}", self.bar, self.approx_time())
+        write!(f, "{} ~{}", self.bar, self.approx_time())
     }
 }
 
@@ -131,7 +131,7 @@ where
                 unit = "min";
             }
 
-            format!("{} {}", elapsed, unit)
+            format!("{}{}", elapsed, unit)
         } else {
             String::from("inf s")
         }
@@ -143,7 +143,7 @@ where
     mapping::Bar<usize>: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ~ {}", self.bar, self.approx_time())
+        write!(f, "{} ~{}", self.bar, self.approx_time())
     }
 }
 
@@ -170,7 +170,7 @@ where
                 unit = "min";
             }
 
-            format!("{} {}", elapsed, unit)
+            format!("{}{}", elapsed, unit)
         } else {
             String::from("inf s")
         }
@@ -182,7 +182,7 @@ where
     mapping::Bar<i64>: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ~ {}", self.bar, self.approx_time())
+        write!(f, "{} ~{}", self.bar, self.approx_time())
     }
 }
 
@@ -209,7 +209,7 @@ where
                 unit = "min";
             }
 
-            format!("{} {}", elapsed, unit)
+            format!("{}{}", elapsed, unit)
         } else {
             String::from("inf s")
         }
@@ -221,7 +221,7 @@ where
     mapping::Bar<i32>: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ~ {}", self.bar, self.approx_time())
+        write!(f, "{} ~{}", self.bar, self.approx_time())
     }
 }
 
@@ -249,7 +249,7 @@ where
                 unit = "min";
             }
 
-            format!("{} {}", elapsed, unit)
+            format!("{}{}", elapsed, unit)
         } else {
             String::from("inf s")
         }
@@ -261,6 +261,6 @@ where
     BernoulliBar: Baring,
 {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{} ~ {}", self.bar, self.approx_time())
+        write!(f, "{} ~{}", self.bar, self.approx_time())
     }
 }
