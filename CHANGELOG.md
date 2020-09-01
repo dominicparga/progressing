@@ -8,10 +8,11 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
+1. [v3.0.0](#v3.0.0)
 1. [v2.2.3](#v2.2.3)
     1. [v2.2.2](#v2.2.2)
-    1. [v2.2.1](#v2.2.1)
-    1. [v2.2.0](#v2.2.0)
+        1. [v2.2.1](#v2.2.1)
+        1. [v2.2.0](#v2.2.0)
     1. [v2.1.0](#v2.1.0)
     1. [v2.0.2](#v2.0.2)
         1. [v2.0.1](#v2.0.1)
@@ -24,15 +25,48 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 
 ### Added <a name="unreleased/added"></a>
 
-- Add `rustfmt` to github-workflows.
-- Add tests running examples.
-- Add wrapping `TimedBar` for approximating remaining time.
-- Add printing bar dependent on relative progress (`has_progressed_significantly()` + `remember_significant_progress()`).
+\-
 
 
 ### Changed <a name="unreleased/changed"></a>
 
+\-
+
+
+### Deprecated <a name="unreleased/deprecated"></a>
+
+\- Detailled documentation is missing, though examples are good.
+
+
+### Removed <a name="unreleased/removed"></a>
+
+\-
+
+
+### Fixed <a name="unreleased/fixed"></a>
+
+\-
+
+
+### Security <a name="unreleased/security"></a>
+
+\-
+
+
+## [v3.0.0][github/self/v3.0.0] <a name="v3.0.0"></a>
+
+### Added <a name="v3.0.0/added"></a>
+
+- Add `rustfmt` to github-workflows.
+- Add tests running examples (hence remove them from GitHub-workflow).
+- Add wrapping `TimedBar` for approximating remaining time.
+- Add printing bar dependent on relative progress (`has_progressed_significantly()` + `remember_significant_progress()`).
+
+
+### Changed <a name="v3.0.0/changed"></a>
+
 - Update README.
+- Cleanup `Cargo.toml`
 - Make implementation much more explicit and easier by removing `reprint(...)` and refactoring `Bar`:
   - Change data-types to more convenient ones (e.g. u32 -> usize).
   - Implement `add(...)` based on `set(...)`
@@ -45,23 +79,23 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
   - Rename bars to support usage of modules explicitly (e.g. `use mapping::Bar as MappingBar` or `use progressing::mapping::Bar as ProgressingMappingBar` etc. instead of `use mapping::MappingBar` or `use progressing::MappingBar`)
 
 
-### Deprecated <a name="unreleased/deprecated"></a>
+### Deprecated <a name="v3.0.0/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
 
 
-### Removed <a name="unreleased/removed"></a>
+### Removed <a name="v3.0.0/removed"></a>
 
 - Remove `reprint(...)`-functions since they are dependent on the used writer/channel.
   -> Update examples.
 
 
-### Fixed <a name="unreleased/fixed"></a>
+### Fixed <a name="v3.0.0/fixed"></a>
 
 \-
 
 
-### Security <a name="unreleased/security"></a>
+### Security <a name="v3.0.0/security"></a>
 
 \-
 
@@ -222,7 +256,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/
 [semver]: https://semver.org/
 
-[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v2.2.2...HEAD
+[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v3.0.0...HEAD
+[github/self/v3.0.0]: https://github.com/dominicparga/progressing/compare/v2.2.2...v3.0.0
 [github/self/v2.2.2]: https://github.com/dominicparga/progressing/compare/v2.2.1...v2.2.2
 [github/self/v2.2.1]: https://github.com/dominicparga/progressing/compare/v2.2.0...v2.2.1
 [github/self/v2.2.0]: https://github.com/dominicparga/progressing/compare/v2.1.0...v2.2.0
