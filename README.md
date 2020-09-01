@@ -79,7 +79,7 @@ Note, that the examples below use `set(...)`, but `add(...)` is supported as wel
   }
   ```
 
-- You may change a bar's style by setting it to a string of 5 characters.
+- You may change a bar's style by setting it to a string of `5` characters.
 
   ```rust
   let mut progress_bar = ClampingBar::new();
@@ -138,7 +138,7 @@ Note, that the examples below use `set(...)`, but `add(...)` is supported as wel
   ```
 
   A line is printed every time when another `10 %` of the goal is reached.
-  Please note, that the progress-bar starts with 13 and hence needs 113 attempts in total.
+  Please note, that the progress-bar starts with `13` and hence needs `113` attempts in total.
 
 
 ## Setup and usage
