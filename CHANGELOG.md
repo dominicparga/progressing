@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
-1. [v3.0.1](#v3.0.1)
+1. [v3.0.2](#v3.0.2)
+    1. [v3.0.1](#v3.0.1)
     1. [v3.0.0](#v3.0.0)
 1. [v2.2.3](#v2.2.3)
     1. [v2.2.2](#v2.2.2)
@@ -52,6 +53,17 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ### Security <a name="unreleased/security"></a>
 
 \-
+
+
+## [v3.0.2][github/self/v3.0.2] <a name="v3.0.2"></a>
+
+### Deprecated <a name="v3.0.2/deprecated"></a>
+
+- Detailled documentation is missing, though examples are good.
+
+### Fixed <a name="v3.0.2/fixed"></a>
+
+- Fix typo in README
 
 
 ## [v3.0.1][github/self/v3.0.1] <a name="v3.0.1"></a>
@@ -259,7 +271,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/
 [semver]: https://semver.org/
 
-[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v3.0.1...HEAD
+[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v3.0.2...HEAD
+[github/self/v3.0.2]: https://github.com/dominicparga/progressing/compare/v3.0.1...v3.0.2
 [github/self/v3.0.1]: https://github.com/dominicparga/progressing/compare/v3.0.0...v3.0.1
 [github/self/v3.0.0]: https://github.com/dominicparga/progressing/compare/v2.2.2...v3.0.0
 [github/self/v2.2.2]: https://github.com/dominicparga/progressing/compare/v2.2.1...v2.2.2
