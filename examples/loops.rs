@@ -60,7 +60,7 @@ fn mapped() {
     println!("Note that the bar neither starts nor ends at the bar-borders.");
 
     // create bar
-    let mut progress_bar = MappingBar::with_range(min_bar_border, max_bar_border);
+    let mut progress_bar = MappingBar::with_range(min_bar_border, max_bar_border).timed();
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
@@ -90,7 +90,7 @@ fn bernoulli() {
     println!("Note that the bar expects less successes than provided .");
 
     // create bar
-    let mut progress_bar = BernoulliBar::with_goal(60);
+    let mut progress_bar = BernoulliBar::with_goal(60).timed();
     // you can reset the length of it
     progress_bar.set_len(60);
 

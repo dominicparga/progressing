@@ -232,8 +232,14 @@ where
     fn approx_time(&self) -> String {
         let progress = self.progress();
         if progress.successes > self.start().successes {
-            let scale =
-                ((self.end().successes - progress.successes) as f64) / (progress.successes as f64);
+            let scale = {
+                if self.end().successes < progress.successes {
+                    0.0
+                } else {
+                    ((self.end().successes - progress.successes) as f64)
+                        / (progress.successes as f64)
+                }
+            };
 
             let elapsed_ms = self.now.elapsed().as_millis();
             let elapsed_s = elapsed_ms as f64 / 1_000.0;
