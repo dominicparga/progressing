@@ -10,6 +10,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v2
+    - name: Install toolchain
+      run: |
+        rustup component add rustfmt
     - name: Build
       run: |
         cargo build --verbose
@@ -17,8 +20,6 @@ jobs:
     - name: Run tests
       run: |
         cargo test --verbose
-        cargo run --example simple
-        cargo run --example loops
         cargo fmt -- --check
     - name: Build docs
       run: cargo doc
@@ -37,9 +38,6 @@ jobs:
     - name: Run tests
       run: |
         cargo test --verbose
-        cargo run --example simple
-        cargo run --example loops
-        cargo fmt -- --check
   nightly:
     runs-on: ubuntu-latest
     steps:
@@ -58,9 +56,6 @@ jobs:
     - name: Run tests
       run: |
         cargo test --verbose
-        cargo run --example simple
-        cargo run --example loops
-        cargo fmt -- --check
       continue-on-error: true
   deploy-and-tag:
     if: github.ref == 'refs/heads/release'

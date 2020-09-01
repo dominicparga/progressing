@@ -1,109 +1,112 @@
-//------------------------------------------------------------------------------------------------//
-// other modules
+use progressing::{
+    bernoulli::Bar as BernoulliBar, clamping::Bar as ClampingBar, mapping::Bar as MappingBar,
+    Baring,
+};
+use std::{thread, time};
 
-use std::thread;
-use std::time;
+const SLEEP_MS: u64 = 20;
 
-//------------------------------------------------------------------------------------------------//
-// own modules
-
-use progressing;
-use progressing::Bar;
-
-//------------------------------------------------------------------------------------------------//
-// different examples for different use-cases
-
-fn clamped() -> Result<(), String> {
-    let min_value = -40;
-    let max_value = 140;
-
+fn main() {
+    // different examples for different use-cases
+    clamped();
     println!();
+    mapped();
+    println!();
+    bernoulli();
+}
+
+fn clamped() {
+    let min_value = -80;
+    let max_value = 180;
+
     println!(
         "The bar is running from {} % to {} % clamping to [0, 1].",
         min_value, max_value
     );
-    println!("Note the respective pause at the beginning and the end.");
+    println!(
+        "{}{}",
+        "Note the respective pause at the beginning and the end, ",
+        "which causes the approximated time to be too high."
+    );
 
     // create bar
-    let mut progressbar = progressing::ClampingBar::new();
+    let mut progress_bar = ClampingBar::new().timed();
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
-        progressbar.set(value as f32 / 100.0).reprint()?;
+        progress_bar.set(value as f32 / 100.0);
+        if progress_bar.has_progressed_significantly() {
+            progress_bar.remember_significant_progress();
+            println!("{}", progress_bar);
+        }
 
         // sleep for visual effects ;)
-        thread::sleep(time::Duration::from_millis(30));
+        thread::sleep(time::Duration::from_millis(SLEEP_MS));
     }
-    // add new line to finished progressbar
-    progressbar.reprintln()
+    // add new line to finished progress-bar
+    println!("{}", progress_bar);
 }
 
-//------------------------------------------------------------------------------------------------//
-
-fn mapped() -> Result<(), String> {
+fn mapped() {
     let min_value = -10;
     let max_value = 100;
+    let min_bar_border = -40;
+    let max_bar_border = 140;
 
-    println!();
     println!(
-        "The bar is running from {} to {} mapping [-40, 140] to [0, 1].",
-        min_value, max_value
+        "The bar is running from {} to {}, but maps [{}, {}] to [0, 1].",
+        min_value, max_value, min_bar_border, max_bar_border
     );
-    println!("Note that the bar doesn't start/end at the bar-borders.");
+    println!("Note that the bar neither starts nor ends at the bar-borders.");
 
     // create bar
-    let mut progressbar = progressing::MappingBar::new(-40..=140);
+    let mut progress_bar = MappingBar::with_range(min_bar_border, max_bar_border).timed();
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
-        progressbar.set(value).reprint()?;
+        progress_bar.set(value);
+        if progress_bar.has_progressed_significantly() {
+            progress_bar.remember_significant_progress();
+            println!("{}", progress_bar);
+        }
 
         // sleep for visual effects ;)
-        thread::sleep(time::Duration::from_millis(30));
+        thread::sleep(time::Duration::from_millis(SLEEP_MS));
     }
-    // add new line to finished progressbar
-    progressbar.reprintln()
+    // add new line to finished progress-bar
+    println!("{}", progress_bar);
 }
 
-//------------------------------------------------------------------------------------------------//
-
-fn bernoulli() -> Result<(), String> {
+fn bernoulli() {
     let min_value = -50;
     let max_value = 120;
 
-    println!();
     println!(
         "The bar is running from {} to {} counting successes (if value is even) and attempts ({}).",
         min_value,
         max_value,
         (max_value - min_value) + 1
     );
-    println!("Note that the bar expects less successes than provided.");
+    println!("Note that the bar expects less successes than provided .");
 
     // create bar
-    let mut progressbar = progressing::BernoulliBar::from_goal(60);
-    // you can reset the lenght of it
-    progressbar.set_bar_len(60);
+    let mut progress_bar = BernoulliBar::with_goal(60).timed();
+    // you can reset the length of it
+    progress_bar.set_len(60);
 
     // do the job and show progress
     for value in min_value..(max_value + 1) {
         // job is successful if value is even
         let is_successful = value % 2 == 0;
-        progressbar.add(is_successful).reprint()?;
+        progress_bar.add(is_successful);
+        if progress_bar.has_progressed_significantly() {
+            progress_bar.remember_significant_progress();
+            println!("{}", progress_bar);
+        }
 
         // sleep for visual effects ;)
-        thread::sleep(time::Duration::from_millis(30));
+        thread::sleep(time::Duration::from_millis(SLEEP_MS));
     }
-    // add new line to finished progressbar
-    progressbar.reprintln()
-}
-
-//------------------------------------------------------------------------------------------------//
-
-fn main() -> Result<(), String> {
-    clamped()?;
-    mapped()?;
-    bernoulli()?;
-
-    Ok(())
+    // add new line to finished progress-bar
+    println!("{}", progress_bar);
 }
