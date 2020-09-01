@@ -96,7 +96,7 @@ Note, that the examples below use `set(...)`, but `add(...)` is supported as wel
   progress_bar.set_style("[#  ]");
   println!("{}", progress_bar);
 
-  // prints [#####-------------]
+  // prints (#####-------------)
   progress_bar.set_style("(#--)");
   println!("{}", progress_bar);
   ```
