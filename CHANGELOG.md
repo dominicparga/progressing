@@ -8,7 +8,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ## Table of contents
 
 1. [Unreleased](#unreleased)
-1. [v3.0.0](#v3.0.0)
+1. [v3.0.1](#v3.0.1)
+    1. [v3.0.0](#v3.0.0)
 1. [v2.2.3](#v2.2.3)
     1. [v2.2.2](#v2.2.2)
         1. [v2.2.1](#v2.2.1)
@@ -53,6 +54,17 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 \-
 
 
+## [v3.0.1][github/self/v3.0.1] <a name="v3.0.1"></a>
+
+### Deprecated <a name="v3.0.1/deprecated"></a>
+
+- Detailled documentation is missing, though examples are good.
+
+### Fixed <a name="v3.0.1/fixed"></a>
+
+- Code-examples in README are being updated.
+
+
 ## [v3.0.0][github/self/v3.0.0] <a name="v3.0.0"></a>
 
 ### Added <a name="v3.0.0/added"></a>
@@ -82,22 +94,13 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 ### Deprecated <a name="v3.0.0/deprecated"></a>
 
 - Detailled documentation is missing, though examples are good.
+- The README shows old code..
 
 
 ### Removed <a name="v3.0.0/removed"></a>
 
 - Remove `reprint(...)`-functions since they are dependent on the used writer/channel.
   -> Update examples.
-
-
-### Fixed <a name="v3.0.0/fixed"></a>
-
-\-
-
-
-### Security <a name="v3.0.0/security"></a>
-
-\-
 
 
 ## [v2.2.3][github/self/v2.2.3] <a name="v2.2.3"></a>
@@ -256,7 +259,8 @@ The format is based on [Keep a Changelog][keepachangelog], and this project adhe
 [keepachangelog]: https://keepachangelog.com/en/
 [semver]: https://semver.org/
 
-[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v3.0.0...HEAD
+[github/self/unreleased]: https://github.com/dominicparga/progressing/compare/v3.0.1...HEAD
+[github/self/v3.0.1]: https://github.com/dominicparga/progressing/compare/v3.0.0...v3.0.1
 [github/self/v3.0.0]: https://github.com/dominicparga/progressing/compare/v2.2.2...v3.0.0
 [github/self/v2.2.2]: https://github.com/dominicparga/progressing/compare/v2.2.1...v2.2.2
 [github/self/v2.2.1]: https://github.com/dominicparga/progressing/compare/v2.2.0...v2.2.1
